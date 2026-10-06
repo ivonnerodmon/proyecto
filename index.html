@@ -82,21 +82,15 @@
         }
         .slide.show-content .overlay { opacity: 1; }
 
-        /* === INTERFAZ CENTRADA VERTICALMENTE === */
+        /* === INTERFAZ NARRADOR Y TEXTO === */
         .narrator-container {
-            position: absolute; 
-            top: 50%; /* Posicionamiento centrado */
-            left: 10%; right: 10%;
-            display: flex; align-items: center; /* Alinea avatar y texto al centro */
-            gap: clamp(20px, 4vw, 50px);
-            opacity: 0; transform: translateY(-20%); /* Inicia un poco más arriba para la animación */
+            position: absolute; top: 50%; left: 10%; right: 10%;
+            display: flex; align-items: center; gap: clamp(20px, 4vw, 50px);
+            opacity: 0; transform: translateY(-20%);
             transition: all 1.5s cubic-bezier(0.2, 0.8, 0.2, 1); z-index: 10;
         }
-        .slide.show-content .narrator-container { 
-            opacity: 1; transform: translateY(-50%); /* Termina exactamente en el centro */
-        }
+        .slide.show-content .narrator-container { opacity: 1; transform: translateY(-50%); }
 
-        /* Avatar Responsivo */
         .avatar { width: clamp(80px, 12vw, 150px); height: clamp(80px, 12vw, 150px); flex-shrink: 0; filter: drop-shadow(0px 10px 20px rgba(0,0,0,0.5)); }
         .avatar svg { width: 100%; height: 100%; }
         
@@ -104,20 +98,35 @@
         .speaking .mouth { animation: talk 0.3s infinite alternate; }
         @keyframes talk { 0% { ry: 1px; } 100% { ry: 8px; } }
 
-        /* Texto Responsivo */
         .slide-quote {
             font-family: 'Playfair Display', serif; 
-            font-size: clamp(1.4rem, 3vw, 3.8rem); /* Escala suave según la pantalla */
-            font-style: italic; 
-            line-height: 1.4; text-shadow: 0px 5px 15px rgba(0,0,0,0.8); color: #ffffff;
-            width: 100%;
+            font-size: clamp(1.4rem, 3vw, 3.8rem); 
+            font-style: italic; line-height: 1.4; text-shadow: 0px 5px 15px rgba(0,0,0,0.8); color: #ffffff; width: 100%;
         }
         .cursor { display: inline-block; width: 3px; height: 1em; background-color: var(--primary); vertical-align: text-bottom; animation: blink 1s infinite; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-        /* === CONTROLES === */
+        /* === UI CONTROLES (Flechas, Audio y Progreso) === */
         #progress-bar { position: absolute; top: 0; left: 0; height: 4px; background: var(--primary); transition: width 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); z-index: 20; width: 0%; box-shadow: 0 0 10px var(--primary); }
         .controls-hint { position: absolute; bottom: 25px; right: 30px; font-size: clamp(0.7rem, 1vw, 0.9rem); color: rgba(255,255,255,0.4); z-index: 20; letter-spacing: 2px; text-transform: uppercase; }
+
+        .nav-btn {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,255,255,0.2);
+            color: white; font-size: 2rem; width: 50px; height: 50px; border-radius: 50%;
+            cursor: pointer; z-index: 50; display: none; align-items: center; justify-content: center;
+            backdrop-filter: blur(5px); transition: background 0.3s ease;
+        }
+        .nav-btn:hover { background: rgba(224, 192, 151, 0.4); }
+        #btn-prev { left: 15px; }
+        #btn-next { right: 15px; }
+
+        #btn-audio {
+            position: absolute; top: 20px; left: 20px; z-index: 50;
+            background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2);
+            color: white; font-size: 1.2rem; width: 45px; height: 45px; border-radius: 50%;
+            cursor: pointer; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px);
+        }
 
         @keyframes fadeIn { to { opacity: 1; } }
         @keyframes slideUpFade { to { opacity: 1; transform: translateY(0); } }
@@ -125,9 +134,9 @@
 </head>
 <body>
 
-    <!-- Audios -->
-    <audio id="audio-fondo" loop><source src="fondo.mp3" type="audio/mpeg"></audio>
-    <audio id="audio-revelacion"><source src="fondo.mp3" type="audio/mpeg"></audio>
+    <!-- Audios (Precargados para móviles) -->
+    <audio id="audio-fondo" loop preload="auto"><source src="fondo.mp3" type="audio/mpeg"></audio>
+    <audio id="audio-revelacion" preload="auto"><source src="revelacion.mp3" type="audio/mpeg"></audio>
 
     <div id="intro-screen">
         <img id="logo-corner" src="logo.png" alt="Logo">
@@ -140,10 +149,15 @@
         <button id="btn-iniciar">INICIAR PRESENTACIÓN</button>
     </div>
 
+    <!-- Controles en pantalla -->
+    <button id="btn-audio" title="Activar/Desactivar Sonido">🔊</button>
+    <button id="btn-prev" class="nav-btn">❮</button>
+    <button id="btn-next" class="nav-btn">❯</button>
+
     <div id="slides-container"></div>
     
     <div id="progress-bar"></div>
-    <div class="controls-hint">Navegación: Flechas ← / →</div>
+    <div class="controls-hint">Usa las flechas laterales o desliza</div>
 
     <template id="avatar-template">
         <div class="avatar" id="avatar-anim">
@@ -166,10 +180,7 @@
 
     <script>
         // ==========================================
-        // === CONFIGURACIÓN MANUAL DE VOLUMEN ======
-        // ==========================================
-        // Cambia este número de 0 a 10 para ajustar el volumen de fondo.
-        const volumenFondo = 3; 
+        const volumenFondo = 3; // Variable de 0 a 10
         // ==========================================
 
         const slidesData = [
@@ -209,7 +220,10 @@
         const audioRevelacion = document.getElementById('audio-revelacion');
         const avatarTemplate = document.getElementById('avatar-template').innerHTML;
 
-        // Inyectar HTML dinámicamente
+        const btnNext = document.getElementById('btn-next');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnAudio = document.getElementById('btn-audio');
+
         slidesData.forEach((data, index) => {
             const slideDiv = document.createElement('div');
             slideDiv.className = 'slide';
@@ -248,26 +262,47 @@
             type();
         }
 
-        // Lógica de inicio y forzar reproducción de audio
+        // --- ARRANQUE Y MANEJO ESTRICTO DE AUDIO ---
         document.getElementById('btn-iniciar').addEventListener('click', () => {
             const elem = document.documentElement;
             if (elem.requestFullscreen) { elem.requestFullscreen(); } 
             else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); } 
 
-            // Aplicar el cálculo del volumen
             audioFondo.volume = volumenFondo / 10;
             
-            // Forzar Play del audio al hacer click (Soluciona el bloqueo de navegadores)
-            audioFondo.play().catch(error => {
-                console.error("El navegador bloqueó el autoplay:", error);
-            });
+            // Ejecución sincrónica inmediata
+            let playPromise = audioFondo.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log("Audio bloqueado por el navegador:", error);
+                    btnAudio.innerHTML = "🔇";
+                });
+            }
 
             document.getElementById('intro-screen').classList.add('hidden');
+            
+            // Mostrar los controles en pantalla
+            btnNext.style.display = 'flex';
+            btnPrev.style.display = 'flex';
+            btnAudio.style.display = 'flex';
+
             setTimeout(() => {
                 document.getElementById('intro-screen').style.display = 'none';
                 container.style.display = 'block';
                 showSlide(0, 'next');
             }, 1500);
+        });
+
+        // Botón físico para forzar el audio si fue bloqueado
+        btnAudio.addEventListener('click', () => {
+            if (audioFondo.paused || audioFondo.muted) {
+                audioFondo.muted = false;
+                audioFondo.play();
+                btnAudio.innerHTML = "🔊";
+            } else {
+                audioFondo.muted = true;
+                btnAudio.innerHTML = "🔇";
+            }
         });
 
         function showSlide(index, direction) {
@@ -299,19 +334,39 @@
             }, 4000); 
         }
 
+        // --- CONTROLES DE NAVEGACIÓN ---
+        function irSiguiente() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                showSlide(currentSlide, 'next');
+            }
+        }
+        function irAnterior() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide, 'prev');
+            }
+        }
+
+        btnNext.addEventListener('click', irSiguiente);
+        btnPrev.addEventListener('click', irAnterior);
+
         document.addEventListener('keydown', (e) => {
             if (container.style.display === 'block') {
-                if (e.key === 'ArrowRight' || e.key === 'Space') {
-                    if (currentSlide < slides.length - 1) {
-                        currentSlide++;
-                        showSlide(currentSlide, 'next');
-                    }
-                } else if (e.key === 'ArrowLeft') {
-                    if (currentSlide > 0) {
-                        currentSlide--;
-                        showSlide(currentSlide, 'prev');
-                    }
-                }
+                if (e.key === 'ArrowRight' || e.key === 'Space') irSiguiente();
+                else if (e.key === 'ArrowLeft') irAnterior();
+            }
+        });
+
+        // --- SOPORTE SWIPE PARA TÁCTIL ---
+        let touchstartX = 0;
+        let touchendX = 0;
+        document.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; });
+        document.addEventListener('touchend', e => {
+            touchendX = e.changedTouches[0].screenX;
+            if (container.style.display === 'block') {
+                if (touchendX < touchstartX - 50) irSiguiente();
+                if (touchendX > touchstartX + 50) irAnterior();
             }
         });
     </script>
