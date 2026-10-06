@@ -2,21 +2,19 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-width=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Sustentación Maestría - Ivonne Maritza Rodríguez</title>
     
-    <!-- Fuentes de Google: Playfair para la elegancia académica, Montserrat para UI -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 
     <style>
-        /* === ESTILOS BASE Y RESET === */
+        /* === RESET Y BASE === */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body, html { width: 100%; height: 100%; background-color: #000; font-family: 'Montserrat', sans-serif; overflow: hidden; color: #fff; }
+        body, html { width: 100%; height: 100%; background-color: #050505; font-family: 'Montserrat', sans-serif; overflow: hidden; color: #fff; }
         
-        /* === ALERTA DE GIRO DE PANTALLA (Dispositivos Móviles) === */
+        /* === ALERTA DE GIRO (Móviles) === */
         #rotate-device {
-            display: none;
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; color: #fff; z-index: 9999;
             align-items: center; justify-content: center; text-align: center;
             font-size: 1.5rem; padding: 20px; flex-direction: column;
@@ -25,158 +23,184 @@
         @keyframes rotatePhone { 0% { transform: rotate(0deg); } 50% { transform: rotate(-90deg); } 100% { transform: rotate(-90deg); } }
         @media screen and (orientation: portrait) { #rotate-device { display: flex; } }
 
-        /* === PANTALLA DE INICIO (LOGO Y BOTÓN) === */
+        /* === PANTALLA DE INICIO RENOVADA === */
         #intro-screen {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #0a0c10 0%, #161a25 100%);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 100; background-color: #050505; transition: opacity 1s ease;
+            z-index: 100; transition: opacity 1s ease;
         }
-        #intro-bg {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('logo.png'); background-size: contain; background-position: center; background-repeat: no-repeat;
-            opacity: 0; transition: all 2s ease;
-        }
-        #intro-bg.dimmed { opacity: 0.3; filter: blur(5px); transform: scale(1.05); }
         
-        #intro-text {
-            position: relative; z-index: 2; text-align: center; opacity: 0; transform: translateY(20px);
-            transition: all 1.5s ease 1s; /* Se revela después de que el logo se atenúa */
+        #logo-corner {
+            position: absolute; top: 40px; right: 50px; width: 140px; height: auto;
+            opacity: 0; animation: fadeIn 1.5s ease forwards 0.5s;
         }
-        #intro-text h1 { font-family: 'Playfair Display', serif; font-size: 2.5vw; margin-bottom: 10px; font-weight: 600; letter-spacing: 2px; }
-        #intro-text h2 { font-size: 1.5vw; font-weight: 300; margin-bottom: 5px; color: #ccc; }
-        #intro-text h3 { font-size: 2vw; font-family: 'Playfair Display', serif; margin-top: 30px; font-style: italic; color: #e0c097; }
+
+        #intro-text {
+            text-align: center; z-index: 2; opacity: 0; transform: translateY(30px);
+            animation: slideUpFade 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 1s;
+        }
+        #intro-text h2 { font-size: 1.2vw; font-weight: 500; margin-bottom: 8px; color: #8e9bb0; letter-spacing: 2px; text-transform: uppercase; }
+        #intro-text h1 { font-family: 'Playfair Display', serif; font-size: 2.5vw; margin-bottom: 40px; font-weight: 600; letter-spacing: 1px; color: #ffffff; }
+        #intro-text h3 { font-size: 2.2vw; font-family: 'Playfair Display', serif; font-style: italic; color: #e0c097; max-width: 75%; margin: 0 auto; line-height: 1.4; }
 
         #btn-iniciar {
-            position: absolute; bottom: 10%; z-index: 3;
-            background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.5);
-            padding: 15px 40px; font-size: 1.2rem; letter-spacing: 3px; cursor: pointer;
-            transition: all 0.3s ease; border-radius: 30px; opacity: 0; animation: fadeInBtn 2s forwards 3s;
+            margin-top: 60px; z-index: 3; background: rgba(255,255,255,0.05); color: #fff;
+            border: 1px solid rgba(224, 192, 151, 0.5); padding: 16px 45px; font-size: 1.1rem; 
+            letter-spacing: 4px; cursor: pointer; border-radius: 40px; opacity: 0; 
+            animation: fadeIn 2s forwards 2.5s; transition: all 0.4s ease; backdrop-filter: blur(5px);
         }
-        #btn-iniciar:hover { background: #fff; color: #000; box-shadow: 0 0 20px rgba(255,255,255,0.5); }
-        @keyframes fadeInBtn { to { opacity: 1; } }
+        #btn-iniciar:hover { background: #e0c097; color: #000; box-shadow: 0 0 25px rgba(224, 192, 151, 0.4); border-color: #e0c097; }
 
-        /* === CONTENEDOR DE DIAPOSITIVAS === */
+        @keyframes fadeIn { to { opacity: 1; } }
+        @keyframes slideUpFade { to { opacity: 1; transform: translateY(0); } }
+
+        /* === SISTEMA DE DIAPOSITIVAS Y TRANSICIONES DE ALTO IMPACTO === */
         #slides-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; }
         
         .slide {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            opacity: 0; transition: opacity 1.5s ease-in-out; pointer-events: none;
+            visibility: hidden; z-index: 1; pointer-events: none;
         }
-        .slide.active { opacity: 1; pointer-events: auto; }
-
-        .slide-bg {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-size: cover; background-position: center;
-            transition: filter 1.5s ease, transform 10s linear;
-            filter: blur(0px) brightness(1); transform: scale(1);
-        }
-        /* Efecto cinematográfico: La foto se acerca lentamente (efecto Ken Burns) */
-        .slide.active .slide-bg { transform: scale(1.05); }
         
-        /* Cuando pasan 2 segundos, se aplica la clase 'show-content' a la diapositiva */
-        .slide.show-content .slide-bg { filter: blur(12px) brightness(0.3); }
+        /* Orden de capas para las transiciones */
+        .slide.active { visibility: visible; z-index: 3; pointer-events: auto; }
+        .slide.outgoing { visibility: visible; z-index: 2; }
 
-        .slide-content {
-            position: absolute; top: 50%; left: 10%; right: 10%; transform: translateY(-50%);
-            text-align: center; opacity: 0; transition: all 1.5s ease; margin-top: 30px;
+        .slide-transition { width: 100%; height: 100%; position: absolute; overflow: hidden; }
+
+        /* Animación de entrada (Wipe Cinematográfico) */
+        .slide.active .slide-transition { animation: wipeInNext 1.4s cubic-bezier(0.77, 0, 0.175, 1) forwards; }
+        .slide.active.reverse .slide-transition { animation: wipeInPrev 1.4s cubic-bezier(0.77, 0, 0.175, 1) forwards; }
+        
+        /* Animación de salida (Efecto de profundidad / Escala hacia atrás) */
+        .slide.outgoing .slide-transition { animation: pushBack 1.4s cubic-bezier(0.77, 0, 0.175, 1) forwards; }
+
+        @keyframes wipeInNext { 0% { clip-path: inset(0 0 0 100%); } 100% { clip-path: inset(0 0 0 0); } }
+        @keyframes wipeInPrev { 0% { clip-path: inset(0 100% 0 0); } 100% { clip-path: inset(0 0 0 0); } }
+        @keyframes pushBack {
+            0% { transform: scale(1); filter: brightness(1); }
+            100% { transform: scale(0.92); filter: brightness(0.2); }
         }
-        .slide.show-content .slide-content { opacity: 1; margin-top: 0; }
+
+        /* Fondo y Efecto Ken Burns continuo */
+        .slide-bg {
+            width: 100%; height: 100%; background-size: cover; background-position: center;
+            transform: scale(1); transition: transform 20s linear;
+        }
+        .slide.active .slide-bg { transform: scale(1.15); }
+
+        /* Filtro oscuro dinámico sin afectar los bordes de la imagen */
+        .overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 12, 16, 0.7); backdrop-filter: blur(15px);
+            opacity: 0; transition: opacity 1.8s ease;
+        }
+        .slide.show-content .overlay { opacity: 1; }
+
+        /* === APARICIÓN DEL TEXTO 3D === */
+        .slide-content {
+            position: absolute; top: 50%; left: 12%; right: 12%; 
+            text-align: center; opacity: 0; z-index: 10;
+            transform: translateY(-30%) perspective(800px) rotateX(15deg) scale(0.95);
+            filter: blur(10px);
+            transition: all 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .slide.show-content .slide-content {
+            opacity: 1; transform: translateY(-50%) perspective(800px) rotateX(0deg) scale(1);
+            filter: blur(0);
+        }
 
         .slide-quote {
-            font-family: 'Playfair Display', serif; font-size: 3.5vw; font-style: italic; line-height: 1.4;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+            font-family: 'Playfair Display', serif; font-size: 3.2vw; font-style: italic; line-height: 1.5;
+            text-shadow: 0px 10px 30px rgba(0,0,0,0.9); color: #ffffff;
         }
 
-        /* === INDICADORES Y NAVEGACIÓN === */
-        #progress-bar { position: absolute; bottom: 0; left: 0; height: 4px; background: rgba(224, 192, 151, 0.8); transition: width 0.5s ease; z-index: 10; width: 0%; }
-        .controls-hint { position: absolute; bottom: 20px; right: 20px; font-size: 0.9rem; color: rgba(255,255,255,0.4); z-index: 10; font-style: italic; }
+        /* === NAVEGACIÓN === */
+        #progress-bar { position: absolute; bottom: 0; left: 0; height: 5px; background: rgba(224, 192, 151, 0.9); transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); z-index: 20; width: 0%; }
+        .controls-hint { position: absolute; bottom: 25px; right: 30px; font-size: 0.85rem; color: rgba(255,255,255,0.3); z-index: 20; font-style: italic; letter-spacing: 1px; }
     </style>
 </head>
 <body>
 
-    <!-- Audios (Cargar los mp3 en la misma carpeta) -->
-    <audio id="audio-ambiente" loop>
-        <source src="ambiente.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="audio-revelacion">
-        <source src="revelacion.mp3" type="audio/mpeg">
-    </audio>
+    <!-- Audios -->
+    <audio id="audio-ambiente" loop><source src="ambiente.mp3" type="audio/mpeg"></audio>
+    <audio id="audio-revelacion"><source src="revelacion.mp3" type="audio/mpeg"></audio>
 
     <!-- Alerta de orientación -->
     <div id="rotate-device">
         <svg viewBox="0 0 24 24"><path d="M16 1H8C6.34 1 5 2.34 5 4v16c0 1.66 1.34 3 3 3h8c1.66 0 3-1.34 3-3V4c0-1.66-1.34-3-3-3zm1 19c0 .55-.45 1-1 1H8c-.55 0-1-.45-1-1V4c0-.55.45-1 1-1h8c.55 0 1 .45 1 1v16zM9 2h6v1H9z"/></svg>
-        Gira tu dispositivo para disfrutar<br>la presentación en pantalla completa (16:9).
+        Gira tu dispositivo para disfrutar<br>la presentación en pantalla completa.
     </div>
 
     <!-- Pantalla de Inicio -->
     <div id="intro-screen">
-        <div id="intro-bg"></div>
+        <img id="logo-corner" src="logo.png" alt="Logo Universidad Libre">
         <div id="intro-text">
-            <h2>UNIVERSIDAD LIBRE DE COLOMBIA</h2>
-            <h2>FACULTAD CIENCIAS DE LA EDUCACIÓN</h2>
-            <h2>MAESTRÍA EN EDUCACIÓN</h2>
-            <h3>Estrategias psicopedagógicas para fortalecer la inclusión y las habilidades para la vida en contextos educativos diversos</h3>
+            <h2>Universidad Libre de Colombia</h2>
+            <h2>Facultad Ciencias de la Educación - Maestría en Educación</h2>
+            <h1>Estrategias psicopedagógicas para fortalecer la inclusión y las habilidades para la vida en contextos educativos diversos</h1>
+            <h3>Ivonne Maritza Rodríguez Monroy</h3>
         </div>
-        <button id="btn-iniciar">INICIAR</button>
+        <button id="btn-iniciar">INICIAR PRESENTACIÓN</button>
     </div>
 
     <!-- Contenedor de la Presentación -->
-    <div id="slides-container">
-        <!-- Las diapositivas se inyectan por JavaScript -->
-    </div>
+    <div id="slides-container"></div>
     
     <div id="progress-bar"></div>
-    <div class="controls-hint">Usa las flechas ← y → del teclado</div>
+    <div class="controls-hint">Usa las flechas ← y → para navegar</div>
 
     <script>
-        // === DATOS DE LA PRESENTACIÓN ===
+        // === DATOS LIMPIOS (Sin símbolos << >>) ===
         const slidesData = [
-            // Sesión 1 (9 fotos)
-            { img: 'session1a.jpg', txt: '«La inclusión real no se mide por la adaptación pasiva, sino por la garantía de espacios donde cada persona pueda ser, sentir y decidir con plena dignidad.»' },
-            { img: 'session1b.jpg', txt: '«En la Asociación para el Desarrollo de Habilidades Diversas, nos encontramos con nueve historias de vida adulta que desafían a diario las etiquetas diagnósticas.»' },
-            { img: 'session1c.jpg', txt: '«Frente a la tendencia de infantilizar al adulto con discapacidad, validamos el valor intrínseco de su voz y su autonomía.»' },
-            { img: 'session1d.jpg', txt: '«Convertimos el aula en un filtro afectivo positivo: un entorno seguro que desactiva la alerta límbica y habilita los procesos superiores.»' },
-            { img: 'session1e.jpg', txt: '«Estructuramos un protocolo en cinco tiempos: acogida, elección, creación cooperativa, metacognición dialógica y vinculación empática.»' },
-            { img: 'session1f.jpg', txt: '«Validar las emociones incondicionalmente permitió descubrir que el enojo y la tristeza son expresiones legítimas que merecen escucha.»' },
-            { img: 'session1g.jpg', txt: '«La libertad de escoger sin buscar la aprobación docente fue el primer acto de soberanía personal frente a años de directrices.»' },
-            { img: 'session1h.jpg', txt: '«Cuando las palabras orales encontraron límites, emergieron miradas, señas y gestos cargados de una empatía profunda.»' },
-            { img: 'session1i.jpg', txt: '«A pesar de las dificultades motrices, el deseo de plasmar la propia identidad superó cualquier barrera física.»' },
-            // Sesión 2 (7 fotos)
-            { img: 'session2a.jpg', txt: '«El salón dejó de ser un conjunto de individualidades para convertirse en un espejo de admiración e imitación mutua.»' },
-            { img: 'session2b.jpg', txt: '«Al eliminar los estándares estéticos rígidos, la ansiedad se disolvió en el placer compartido de crear un árbol común.»' },
-            { img: 'session2c.jpg', txt: '«Sustituir la tijera por el rasgado libre demostró que la barrera nunca estuvo en la persona, sino en el material impuesto.»' },
-            { img: 'session2d.jpg', txt: '«Manos que sostuvieron el papel para que otro pegara su retazo: la cooperación brotó sin instrucción adulta.»' },
-            { img: 'session2e.jpg', txt: '«Repartir tareas enseñó que la organización horizontal genera orden, sentido de pertenencia y valoración comunitaria.»' },
-            { img: 'session2f.jpg', txt: '«Aprender a esperar el turno frente a un lienzo compartido demandó memoria y autorregulación colectiva.»' },
-            { img: 'session2g.jpg', txt: '«El tacto y los aromas actuaron como moduladores directos, transformando la inquietud en serenidad somática.»' },
-            // Sesión 3 (9 fotos)
-            { img: 'session3a.jpg', txt: '«Participantes que mostraban apatía encontraron en la textura táctil un puente de interés y reconexión activa.»' },
-            { img: 'session3b.jpg', txt: '«Un recurso de calma construido con las propias manos adquiere un valor que ningún objeto comercial puede igualar.»' },
-            { img: 'session3c.jpg', txt: '«Acompañar los temblores con apoyo guiado garantizó que el participante fuera el autor de su propia herramienta.»' },
-            { img: 'session3d.jpg', txt: '«La calma vivenciada abrió el camino para entrenar el uso de estos recursos en el hogar y la vida independiente.»' },
-            { img: 'session3e.jpg', txt: '«Uno de los mayores logros fue ver a las cuidadoras soltar la mano que guiaba para convertirse en soporte logístico.»' },
-            { img: 'session3f.jpg', txt: '«Sustentado metodológicamente, este estudio garantizó trazabilidad para que otros continúen abriendo caminos.»' },
-            { img: 'session3g.jpg', txt: '«Confirmamos que la discapacidad es una invitación pedagógica a derribar las barreras del entorno.»' },
-            { img: 'session3h.jpg', txt: '«La mediación psicopedagógica se consolida como una práctica emancipadora de autodeterminación y dignidad.»' },
-            { img: 'session3i.jpg', txt: '«Educar desde el afecto y la cooperación no es una utopía: es el acto de justicia social que transforma el cuidado en libertad.»' }
+            // Sesión 1 
+            { img: 'session1a.jpg', txt: 'La inclusión real no se mide por la adaptación pasiva, sino por la garantía de espacios donde cada persona pueda ser, sentir y decidir con plena dignidad.' },
+            { img: 'session1b.jpg', txt: 'En la Asociación para el Desarrollo de Habilidades Diversas, nos encontramos con nueve historias de vida adulta que desafían a diario las etiquetas diagnósticas.' },
+            { img: 'session1c.jpg', txt: 'Frente a la tendencia de infantilizar al adulto con discapacidad, validamos el valor intrínseco de su voz y su autonomía.' },
+            { img: 'session1d.jpg', txt: 'Convertimos el aula en un filtro afectivo positivo: un entorno seguro que desactiva la alerta límbica y habilita los procesos superiores.' },
+            { img: 'session1e.jpg', txt: 'Estructuramos un protocolo en cinco tiempos: acogida, elección, creación cooperativa, metacognición dialógica y vinculación empática.' },
+            { img: 'session1f.jpg', txt: 'Validar las emociones incondicionalmente permitió descubrir que el enojo y la tristeza son expresiones legítimas que merecen escucha.' },
+            { img: 'session1g.jpg', txt: 'La libertad de escoger sin buscar la aprobación docente fue el primer acto de soberanía personal frente a años de directrices.' },
+            { img: 'session1h.jpg', txt: 'Cuando las palabras orales encontraron límites, emergieron miradas, señas y gestos cargados de una empatía profunda.' },
+            { img: 'session1i.jpg', txt: 'A pesar de las dificultades motrices, el deseo de plasmar la propia identidad superó cualquier barrera física.' },
+            // Sesión 2 
+            { img: 'session2a.jpg', txt: 'El salón dejó de ser un conjunto de individualidades para convertirse en un espejo de admiración e imitación mutua.' },
+            { img: 'session2b.jpg', txt: 'Al eliminar los estándares estéticos rígidos, la ansiedad se disolvió en el placer compartido de crear un árbol común.' },
+            { img: 'session2c.jpg', txt: 'Sustituir la tijera por el rasgado libre demostró que la barrera nunca estuvo en la persona, sino en el material impuesto.' },
+            { img: 'session2d.jpg', txt: 'Manos que sostuvieron el papel para que otro pegara su retazo: la cooperación brotó sin instrucción adulta.' },
+            { img: 'session2e.jpg', txt: 'Repartir tareas enseñó que la organización horizontal genera orden, sentido de pertenencia y valoración comunitaria.' },
+            { img: 'session2f.jpg', txt: 'Aprender a esperar el turno frente a un lienzo compartido demandó memoria y autorregulación colectiva.' },
+            { img: 'session2g.jpg', txt: 'El tacto y los aromas actuaron como moduladores directos, transformando la inquietud en serenidad somática.' },
+            // Sesión 3 
+            { img: 'session3a.jpg', txt: 'Participantes que mostraban apatía encontraron en la textura táctil un puente de interés y reconexión activa.' },
+            { img: 'session3b.jpg', txt: 'Un recurso de calma construido con las propias manos adquiere un valor que ningún objeto comercial puede igualar.' },
+            { img: 'session3c.jpg', txt: 'Acompañar los temblores con apoyo guiado garantizó que el participante fuera el autor de su propia herramienta.' },
+            { img: 'session3d.jpg', txt: 'La calma vivenciada abrió el camino para entrenar el uso de estos recursos en el hogar y la vida independiente.' },
+            { img: 'session3e.jpg', txt: 'Uno de los mayores logros fue ver a las cuidadoras soltar la mano que guiaba para convertirse en soporte logístico.' },
+            { img: 'session3f.jpg', txt: 'Sustentado metodológicamente, este estudio garantizó trazabilidad para que otros continúen abriendo caminos.' },
+            { img: 'session3g.jpg', txt: 'Confirmamos que la discapacidad es una invitación pedagógica a derribar las barreras del entorno.' },
+            { img: 'session3h.jpg', txt: 'La mediación psicopedagógica se consolida como una práctica emancipadora de autodeterminación y dignidad.' },
+            { img: 'session3i.jpg', txt: 'Educar desde el afecto y la cooperación no es una utopía: es el acto de justicia social que transforma el cuidado en libertad.' }
         ];
 
-        // === LÓGICA DE APLICACIÓN ===
         let currentSlide = 0;
+        let lastSlide = -1;
         let slideTimer;
         const container = document.getElementById('slides-container');
         const progressBar = document.getElementById('progress-bar');
         const audioAmbiente = document.getElementById('audio-ambiente');
         const audioRevelacion = document.getElementById('audio-revelacion');
 
-        // Generar el DOM de las diapositivas
+        // Generar DOM
         slidesData.forEach((data, index) => {
             const slideDiv = document.createElement('div');
             slideDiv.className = 'slide';
-            slideDiv.id = `slide-${index}`;
-            
             slideDiv.innerHTML = `
-                <div class="slide-bg" style="background-image: url('${data.img}');"></div>
+                <div class="slide-transition">
+                    <div class="slide-bg" style="background-image: url('${data.img}');"></div>
+                    <div class="overlay"></div>
+                </div>
                 <div class="slide-content">
                     <div class="slide-quote">${data.txt}</div>
                 </div>
@@ -186,103 +210,66 @@
 
         const slides = document.querySelectorAll('.slide');
 
-        // Animación de Entrada del Logo
-        window.onload = () => {
-            setTimeout(() => {
-                document.getElementById('intro-bg').style.opacity = '1'; // Aparece logo
-                setTimeout(() => {
-                    document.getElementById('intro-bg').classList.add('dimmed'); // Se atenúa y muestra texto
-                    document.getElementById('intro-text').style.opacity = '1';
-                    document.getElementById('intro-text').style.transform = 'translateY(0)';
-                }, 1500);
-            }, 500);
-        };
-
-        // Iniciar Presentación y Pantalla Completa
+        // Iniciar
         document.getElementById('btn-iniciar').addEventListener('click', () => {
             const elem = document.documentElement;
-            // Solicitar Fullscreen
             if (elem.requestFullscreen) { elem.requestFullscreen(); } 
             else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); } 
-            else if (elem.msRequestFullscreen) { elem.msRequestFullscreen(); }
 
-            // Ocultar inicio, mostrar slides
             document.getElementById('intro-screen').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('intro-screen').style.display = 'none';
                 container.style.display = 'block';
                 
-                // Iniciar Audio
-                audioAmbiente.volume = 0.4; // Volumen moderado
-                audioAmbiente.play().catch(e => console.log("Audio no disponible"));
+                audioAmbiente.volume = 0.4;
+                audioAmbiente.play().catch(() => console.log("Interacción requerida para audio"));
                 
-                showSlide(0);
+                showSlide(0, 'next');
             }, 1000);
         });
 
-        // Función para mostrar una diapositiva específica
-        function showSlide(index) {
+        // Lógica de transición
+        function showSlide(index, direction) {
             clearTimeout(slideTimer);
             
-            // Ocultar todas
-            slides.forEach(s => {
-                s.classList.remove('active');
-                s.classList.remove('show-content');
+            slides.forEach((s, i) => {
+                s.classList.remove('active', 'outgoing', 'reverse', 'show-content');
+                if (i === lastSlide) {
+                    s.classList.add('outgoing'); // Aplica efecto de profundidad a la saliente
+                }
             });
 
-            // Mostrar la actual a Full Color
+            if (direction === 'prev') slides[index].classList.add('reverse');
             slides[index].classList.add('active');
             
-            // Actualizar barra de progreso
+            lastSlide = index;
             progressBar.style.width = ((index + 1) / slides.length) * 100 + '%';
 
-            // Temporizador de 2 segundos para atenuar y mostrar frase
+            // Tiempo ajustado a 4 segundos
             slideTimer = setTimeout(() => {
                 slides[index].classList.add('show-content');
-                // Reproducir sonido sutil de revelación
                 audioRevelacion.currentTime = 0;
-                audioRevelacion.volume = 0.6;
+                audioRevelacion.volume = 0.5;
                 audioRevelacion.play().catch(e => {});
-            }, 2000);
+            }, 4000); 
         }
 
-        // Navegación por teclado
+        // Controles teclado
         document.addEventListener('keydown', (e) => {
             if (container.style.display === 'block') {
                 if (e.key === 'ArrowRight' || e.key === 'Space') {
                     if (currentSlide < slides.length - 1) {
                         currentSlide++;
-                        showSlide(currentSlide);
+                        showSlide(currentSlide, 'next');
                     }
                 } else if (e.key === 'ArrowLeft') {
                     if (currentSlide > 0) {
                         currentSlide--;
-                        showSlide(currentSlide);
+                        showSlide(currentSlide, 'prev');
                     }
                 }
             }
         });
-
-        // Soporte táctil básico (Swipes para cambiar)
-        let touchstartX = 0;
-        let touchendX = 0;
-        
-        document.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; });
-        document.addEventListener('touchend', e => {
-            touchendX = e.changedTouches[0].screenX;
-            handleGesture();
-        });
-
-        function handleGesture() {
-            if (container.style.display === 'block') {
-                if (touchendX < touchstartX - 50) { // Swipe a la izquierda (Siguiente)
-                    if (currentSlide < slides.length - 1) { currentSlide++; showSlide(currentSlide); }
-                }
-                if (touchendX > touchstartX + 50) { // Swipe a la derecha (Anterior)
-                    if (currentSlide > 0) { currentSlide--; showSlide(currentSlide); }
-                }
-            }
-        }
     </script>
 </body>
 </html>
