@@ -8,153 +8,172 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 
     <style>
-        /* === RESET Y BASE === */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body, html { width: 100%; height: 100%; background-color: #050505; font-family: 'Montserrat', sans-serif; overflow: hidden; color: #fff; }
-        
-        /* === ALERTA DE GIRO (Móviles) === */
-        #rotate-device {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; color: #fff; z-index: 9999;
-            align-items: center; justify-content: center; text-align: center;
-            font-size: 1.5rem; padding: 20px; flex-direction: column;
+        /* === RESET Y VARIABLES === */
+        :root {
+            --primary: #e0c097;
+            --dark: #0a0c10;
+            --text: #ffffff;
+            --transition-speed: 1.8s;
         }
-        #rotate-device svg { width: 80px; height: 80px; margin-bottom: 20px; fill: #fff; animation: rotatePhone 2s infinite ease-in-out; }
-        @keyframes rotatePhone { 0% { transform: rotate(0deg); } 50% { transform: rotate(-90deg); } 100% { transform: rotate(-90deg); } }
-        @media screen and (orientation: portrait) { #rotate-device { display: flex; } }
-
-        /* === PANTALLA DE INICIO RENOVADA === */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html { width: 100%; height: 100%; background-color: var(--dark); font-family: 'Montserrat', sans-serif; overflow: hidden; color: var(--text); }
+        
+        /* === PANTALLA DE INICIO === */
         #intro-screen {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #0a0c10 0%, #161a25 100%);
+            background: radial-gradient(circle at center, #161a25 0%, #050608 100%);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 100; transition: opacity 1s ease;
+            z-index: 100; transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1), opacity 1.5s ease;
         }
+        #intro-screen.hidden { transform: translateY(-100%); opacity: 0; pointer-events: none; }
         
         #logo-corner {
             position: absolute; top: 40px; right: 50px; width: 140px; height: auto;
-            opacity: 0; animation: fadeIn 1.5s ease forwards 0.5s;
+            animation: fadeIn 1.5s ease forwards 0.5s; opacity: 0;
         }
 
         #intro-text {
             text-align: center; z-index: 2; opacity: 0; transform: translateY(30px);
-            animation: slideUpFade 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 1s;
+            animation: slideUpFade 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 1s; max-width: 80%;
         }
-        #intro-text h2 { font-size: 1.2vw; font-weight: 500; margin-bottom: 8px; color: #8e9bb0; letter-spacing: 2px; text-transform: uppercase; }
-        #intro-text h1 { font-family: 'Playfair Display', serif; font-size: 2.5vw; margin-bottom: 40px; font-weight: 600; letter-spacing: 1px; color: #ffffff; }
-        #intro-text h3 { font-size: 2.2vw; font-family: 'Playfair Display', serif; font-style: italic; color: #e0c097; max-width: 75%; margin: 0 auto; line-height: 1.4; }
+        #intro-text h2 { font-size: 1.1vw; font-weight: 500; margin-bottom: 12px; color: #8e9bb0; letter-spacing: 3px; text-transform: uppercase; }
+        #intro-text h1 { font-family: 'Playfair Display', serif; font-size: 3vw; margin-bottom: 40px; font-weight: 600; letter-spacing: 1px; line-height: 1.2; }
+        #intro-text h3 { font-size: 1.8vw; font-family: 'Playfair Display', serif; font-style: italic; color: var(--primary); font-weight: 400; }
 
         #btn-iniciar {
-            margin-top: 60px; z-index: 3; background: rgba(255,255,255,0.05); color: #fff;
-            border: 1px solid rgba(224, 192, 151, 0.5); padding: 16px 45px; font-size: 1.1rem; 
-            letter-spacing: 4px; cursor: pointer; border-radius: 40px; opacity: 0; 
-            animation: fadeIn 2s forwards 2.5s; transition: all 0.4s ease; backdrop-filter: blur(5px);
+            margin-top: 60px; z-index: 3; background: transparent; color: var(--text);
+            border: 1px solid rgba(224, 192, 151, 0.5); padding: 18px 50px; font-size: 1.1rem; 
+            letter-spacing: 4px; cursor: pointer; border-radius: 50px; opacity: 0; 
+            animation: fadeIn 2s forwards 2s; transition: all 0.4s ease;
+            position: relative; overflow: hidden;
         }
-        #btn-iniciar:hover { background: #e0c097; color: #000; box-shadow: 0 0 25px rgba(224, 192, 151, 0.4); border-color: #e0c097; }
+        #btn-iniciar::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        #btn-iniciar:hover::before { left: 100%; }
+        #btn-iniciar:hover { background: var(--primary); color: #000; border-color: var(--primary); box-shadow: 0 0 30px rgba(224, 192, 151, 0.3); }
 
-        @keyframes fadeIn { to { opacity: 1; } }
-        @keyframes slideUpFade { to { opacity: 1; transform: translateY(0); } }
-
-        /* === SISTEMA DE DIAPOSITIVAS Y TRANSICIONES DE ALTO IMPACTO === */
+        /* === SISTEMA DE DIAPOSITIVAS (CLIPPING PATH AVANZADO) === */
         #slides-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; }
         
-        .slide {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            visibility: hidden; z-index: 1; pointer-events: none;
-        }
-        
-        /* Orden de capas para las transiciones */
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; visibility: hidden; z-index: 1; pointer-events: none; }
         .slide.active { visibility: visible; z-index: 3; pointer-events: auto; }
         .slide.outgoing { visibility: visible; z-index: 2; }
 
-        .slide-transition { width: 100%; height: 100%; position: absolute; overflow: hidden; }
-
-        /* Animación de entrada (Wipe Cinematográfico) */
-        .slide.active .slide-transition { animation: wipeInNext 1.4s cubic-bezier(0.77, 0, 0.175, 1) forwards; }
-        .slide.active.reverse .slide-transition { animation: wipeInPrev 1.4s cubic-bezier(0.77, 0, 0.175, 1) forwards; }
+        /* Máscara de polígono para revelado cinemático */
+        .slide-transition {
+            width: 100%; height: 100%; position: absolute; overflow: hidden;
+            clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
+            transition: clip-path var(--transition-speed) cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        .slide.active .slide-transition { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+        .slide.active.reverse .slide-transition { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); animation: wipeReverse var(--transition-speed) cubic-bezier(0.77, 0, 0.175, 1) forwards; }
         
-        /* Animación de salida (Efecto de profundidad / Escala hacia atrás) */
-        .slide.outgoing .slide-transition { animation: pushBack 1.4s cubic-bezier(0.77, 0, 0.175, 1) forwards; }
+        @keyframes wipeReverse { 0% { clip-path: polygon(0 0, 0 0, 0 100%, 0 100%); } 100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); } }
 
-        @keyframes wipeInNext { 0% { clip-path: inset(0 0 0 100%); } 100% { clip-path: inset(0 0 0 0); } }
-        @keyframes wipeInPrev { 0% { clip-path: inset(0 100% 0 0); } 100% { clip-path: inset(0 0 0 0); } }
-        @keyframes pushBack {
-            0% { transform: scale(1); filter: brightness(1); }
-            100% { transform: scale(0.92); filter: brightness(0.2); }
-        }
+        .slide-bg { width: 100%; height: 100%; background-size: cover; background-position: center; transform: scale(1.1); transition: transform 25s linear; filter: brightness(1); }
+        .slide.active .slide-bg { transform: scale(1); }
 
-        /* Fondo y Efecto Ken Burns continuo */
-        .slide-bg {
-            width: 100%; height: 100%; background-size: cover; background-position: center;
-            transform: scale(1); transition: transform 20s linear;
-        }
-        .slide.active .slide-bg { transform: scale(1.15); }
-
-        /* Filtro oscuro dinámico sin afectar los bordes de la imagen */
+        /* Filtro que aplica el Blur a los 4 segundos */
         .overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(10, 12, 16, 0.7); backdrop-filter: blur(15px);
-            opacity: 0; transition: opacity 1.8s ease;
+            background: rgba(5, 7, 10, 0.75); backdrop-filter: blur(12px);
+            opacity: 0; transition: opacity 2s ease;
         }
         .slide.show-content .overlay { opacity: 1; }
 
-        /* === APARICIÓN DEL TEXTO 3D === */
-        .slide-content {
-            position: absolute; top: 50%; left: 12%; right: 12%; 
-            text-align: center; opacity: 0; z-index: 10;
-            transform: translateY(-30%) perspective(800px) rotateX(15deg) scale(0.95);
-            filter: blur(10px);
-            transition: all 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        /* === INTERFAZ DE NARRACIÓN (AVATAR SVG + TEXTO) === */
+        .narrator-container {
+            position: absolute; bottom: 15%; left: 10%; right: 15%;
+            display: flex; align-items: flex-start; gap: 40px;
+            opacity: 0; transform: translateY(40px);
+            transition: all 1.5s cubic-bezier(0.2, 0.8, 0.2, 1); z-index: 10;
         }
-        .slide.show-content .slide-content {
-            opacity: 1; transform: translateY(-50%) perspective(800px) rotateX(0deg) scale(1);
-            filter: blur(0);
-        }
+        .slide.show-content .narrator-container { opacity: 1; transform: translateY(0); }
 
+        /* Avatar SVG Construido con Código Nativo */
+        .avatar { width: 120px; height: 120px; flex-shrink: 0; filter: drop-shadow(0px 10px 20px rgba(0,0,0,0.5)); }
+        .avatar svg { width: 100%; height: 100%; }
+        
+        /* Animación nativa de la boca hablando */
+        .mouth { transition: ry 0.1s ease; transform-origin: center; }
+        .speaking .mouth { animation: talk 0.3s infinite alternate; }
+        @keyframes talk { 0% { ry: 1px; } 100% { ry: 8px; } }
+
+        /* Texto estilo Typewriter */
         .slide-quote {
-            font-family: 'Playfair Display', serif; font-size: 3.2vw; font-style: italic; line-height: 1.5;
-            text-shadow: 0px 10px 30px rgba(0,0,0,0.9); color: #ffffff;
+            font-family: 'Playfair Display', serif; font-size: 2.8vw; font-style: italic; 
+            line-height: 1.5; text-shadow: 0px 5px 15px rgba(0,0,0,0.8); color: #ffffff;
+            min-height: 120px; /* Evita saltos de diseño mientras escribe */
         }
+        .cursor { display: inline-block; width: 3px; height: 1em; background-color: var(--primary); vertical-align: text-bottom; animation: blink 1s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-        /* === NAVEGACIÓN === */
-        #progress-bar { position: absolute; bottom: 0; left: 0; height: 5px; background: rgba(224, 192, 151, 0.9); transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); z-index: 20; width: 0%; }
-        .controls-hint { position: absolute; bottom: 25px; right: 30px; font-size: 0.85rem; color: rgba(255,255,255,0.3); z-index: 20; font-style: italic; letter-spacing: 1px; }
+        /* === CONTROLES === */
+        #progress-bar { position: absolute; top: 0; left: 0; height: 4px; background: var(--primary); transition: width 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); z-index: 20; width: 0%; box-shadow: 0 0 10px var(--primary); }
+        .controls-hint { position: absolute; bottom: 25px; right: 30px; font-size: 0.8rem; color: rgba(255,255,255,0.4); z-index: 20; letter-spacing: 2px; text-transform: uppercase; }
+
+        @keyframes fadeIn { to { opacity: 1; } }
+        @keyframes slideUpFade { to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <!-- Audios -->
-    <audio id="audio-ambiente" loop><source src="ambiente.mp3" type="audio/mpeg"></audio>
+    <!-- Audio Principal en Bucle -->
+    <audio id="audio-fondo" loop><source src="fondo.mp3" type="audio/mpeg"></audio>
     <audio id="audio-revelacion"><source src="revelacion.mp3" type="audio/mpeg"></audio>
 
-    <!-- Alerta de orientación -->
-    <div id="rotate-device">
-        <svg viewBox="0 0 24 24"><path d="M16 1H8C6.34 1 5 2.34 5 4v16c0 1.66 1.34 3 3 3h8c1.66 0 3-1.34 3-3V4c0-1.66-1.34-3-3-3zm1 19c0 .55-.45 1-1 1H8c-.55 0-1-.45-1-1V4c0-.55.45-1 1-1h8c.55 0 1 .45 1 1v16zM9 2h6v1H9z"/></svg>
-        Gira tu dispositivo para disfrutar<br>la presentación en pantalla completa.
-    </div>
-
-    <!-- Pantalla de Inicio -->
+    <!-- Pantalla de Inicio (Logo Superior Derecho) -->
     <div id="intro-screen">
-        <img id="logo-corner" src="logo.png" alt="Logo Universidad Libre">
+        <img id="logo-corner" src="logo.png" alt="Logo">
         <div id="intro-text">
             <h2>Universidad Libre de Colombia</h2>
             <h2>Facultad Ciencias de la Educación - Maestría en Educación</h2>
-            <h1>Estrategias psicopedagógicas para fortalecer la inclusión y las habilidades para la vida en contextos educativos diversos</h1>
+            <h1>Estrategias psicopedagógicas para fortalecer la inclusión y las habilidades para la vida</h1>
             <h3>Ivonne Maritza Rodríguez Monroy</h3>
         </div>
         <button id="btn-iniciar">INICIAR PRESENTACIÓN</button>
     </div>
 
-    <!-- Contenedor de la Presentación -->
+    <!-- Contenedor Principal -->
     <div id="slides-container"></div>
     
     <div id="progress-bar"></div>
-    <div class="controls-hint">Usa las flechas ← y → para navegar</div>
+    <div class="controls-hint">Navegación: Flechas ← / →</div>
+
+    <!-- Plantilla del Avatar SVG (Abuelito Sabio) -->
+    <template id="avatar-template">
+        <div class="avatar" id="avatar-anim">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <!-- Círculo de fondo (Burbuja) -->
+                <circle cx="50" cy="50" r="48" fill="#1a1f2b" stroke="#e0c097" stroke-width="2"/>
+                <!-- Hombros -->
+                <path d="M 20 90 Q 50 60 80 90 Z" fill="#2c3545"/>
+                <!-- Cuello y Cabeza -->
+                <rect x="42" y="60" width="16" height="15" fill="#e8c3a5"/>
+                <circle cx="50" cy="45" r="22" fill="#f2d1b3"/>
+                <!-- Cabello y Barba Blanca -->
+                <path d="M 28 45 Q 20 20 50 15 Q 80 20 72 45 Q 85 75 50 85 Q 15 75 28 45 Z" fill="#ffffff" opacity="0.9"/>
+                <!-- Rostro interno -->
+                <circle cx="50" cy="48" r="16" fill="#f2d1b3"/>
+                <!-- Gafas -->
+                <circle cx="41" cy="42" r="6" fill="none" stroke="#5a687d" stroke-width="2"/>
+                <circle cx="59" cy="42" r="6" fill="none" stroke="#5a687d" stroke-width="2"/>
+                <line x1="47" y1="42" x2="53" y2="42" stroke="#5a687d" stroke-width="2"/>
+                <!-- Ojos -->
+                <circle cx="41" cy="42" r="2" fill="#1a1f2b"/>
+                <circle cx="59" cy="42" r="2" fill="#1a1f2b"/>
+                <!-- Boca Animada (Clase .mouth es controlada por JS) -->
+                <ellipse cx="50" cy="58" rx="5" ry="1" fill="#1a1f2b" class="mouth"/>
+            </svg>
+        </div>
+    </template>
 
     <script>
-        // === DATOS LIMPIOS (Sin símbolos << >>) ===
         const slidesData = [
-            // Sesión 1 
+            // Sesión 1
             { img: 'session1a.jpg', txt: 'La inclusión real no se mide por la adaptación pasiva, sino por la garantía de espacios donde cada persona pueda ser, sentir y decidir con plena dignidad.' },
             { img: 'session1b.jpg', txt: 'En la Asociación para el Desarrollo de Habilidades Diversas, nos encontramos con nueve historias de vida adulta que desafían a diario las etiquetas diagnósticas.' },
             { img: 'session1c.jpg', txt: 'Frente a la tendencia de infantilizar al adulto con discapacidad, validamos el valor intrínseco de su voz y su autonomía.' },
@@ -164,7 +183,7 @@
             { img: 'session1g.jpg', txt: 'La libertad de escoger sin buscar la aprobación docente fue el primer acto de soberanía personal frente a años de directrices.' },
             { img: 'session1h.jpg', txt: 'Cuando las palabras orales encontraron límites, emergieron miradas, señas y gestos cargados de una empatía profunda.' },
             { img: 'session1i.jpg', txt: 'A pesar de las dificultades motrices, el deseo de plasmar la propia identidad superó cualquier barrera física.' },
-            // Sesión 2 
+            // Sesión 2
             { img: 'session2a.jpg', txt: 'El salón dejó de ser un conjunto de individualidades para convertirse en un espejo de admiración e imitación mutua.' },
             { img: 'session2b.jpg', txt: 'Al eliminar los estándares estéticos rígidos, la ansiedad se disolvió en el placer compartido de crear un árbol común.' },
             { img: 'session2c.jpg', txt: 'Sustituir la tijera por el rasgado libre demostró que la barrera nunca estuvo en la persona, sino en el material impuesto.' },
@@ -172,7 +191,7 @@
             { img: 'session2e.jpg', txt: 'Repartir tareas enseñó que la organización horizontal genera orden, sentido de pertenencia y valoración comunitaria.' },
             { img: 'session2f.jpg', txt: 'Aprender a esperar el turno frente a un lienzo compartido demandó memoria y autorregulación colectiva.' },
             { img: 'session2g.jpg', txt: 'El tacto y los aromas actuaron como moduladores directos, transformando la inquietud en serenidad somática.' },
-            // Sesión 3 
+            // Sesión 3
             { img: 'session3a.jpg', txt: 'Participantes que mostraban apatía encontraron en la textura táctil un puente de interés y reconexión activa.' },
             { img: 'session3b.jpg', txt: 'Un recurso de calma construido con las propias manos adquiere un valor que ningún objeto comercial puede igualar.' },
             { img: 'session3c.jpg', txt: 'Acompañar los temblores con apoyo guiado garantizó que el participante fuera el autor de su propia herramienta.' },
@@ -185,14 +204,15 @@
         ];
 
         let currentSlide = 0;
-        let lastSlide = -1;
         let slideTimer;
+        let typeWriterTimeout;
         const container = document.getElementById('slides-container');
         const progressBar = document.getElementById('progress-bar');
-        const audioAmbiente = document.getElementById('audio-ambiente');
+        const audioFondo = document.getElementById('audio-fondo');
         const audioRevelacion = document.getElementById('audio-revelacion');
+        const avatarTemplate = document.getElementById('avatar-template').innerHTML;
 
-        // Generar DOM
+        // Generar DOM de las diapositivas
         slidesData.forEach((data, index) => {
             const slideDiv = document.createElement('div');
             slideDiv.className = 'slide';
@@ -201,8 +221,11 @@
                     <div class="slide-bg" style="background-image: url('${data.img}');"></div>
                     <div class="overlay"></div>
                 </div>
-                <div class="slide-content">
-                    <div class="slide-quote">${data.txt}</div>
+                <div class="narrator-container">
+                    ${avatarTemplate}
+                    <div class="slide-quote">
+                        <span class="text-container" id="text-${index}"></span><span class="cursor"></span>
+                    </div>
                 </div>
             `;
             container.appendChild(slideDiv);
@@ -210,51 +233,75 @@
 
         const slides = document.querySelectorAll('.slide');
 
+        // Función para simular máquina de escribir sincrónica con el SVG
+        function typeWriter(text, elementId, avatarElement) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = '';
+            let i = 0;
+            avatarElement.classList.add('speaking'); // El SVG empieza a mover la boca
+
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    typeWriterTimeout = setTimeout(type, 40); // Velocidad de tipeo
+                } else {
+                    avatarElement.classList.remove('speaking'); // El SVG se detiene al terminar
+                }
+            }
+            type();
+        }
+
         // Iniciar
         document.getElementById('btn-iniciar').addEventListener('click', () => {
             const elem = document.documentElement;
             if (elem.requestFullscreen) { elem.requestFullscreen(); } 
             else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); } 
 
-            document.getElementById('intro-screen').style.opacity = '0';
+            document.getElementById('intro-screen').classList.add('hidden');
             setTimeout(() => {
                 document.getElementById('intro-screen').style.display = 'none';
                 container.style.display = 'block';
                 
-                audioAmbiente.volume = 0.4;
-                audioAmbiente.play().catch(() => console.log("Interacción requerida para audio"));
+                audioFondo.volume = 0.3;
+                audioFondo.play().catch(() => console.log("Interacción requerida para audio"));
                 
                 showSlide(0, 'next');
-            }, 1000);
+            }, 1500);
         });
 
-        // Lógica de transición
         function showSlide(index, direction) {
             clearTimeout(slideTimer);
+            clearTimeout(typeWriterTimeout);
             
+            // Limpiar estados anteriores
             slides.forEach((s, i) => {
                 s.classList.remove('active', 'outgoing', 'reverse', 'show-content');
-                if (i === lastSlide) {
-                    s.classList.add('outgoing'); // Aplica efecto de profundidad a la saliente
-                }
+                const txt = document.getElementById(`text-${i}`);
+                if(txt) txt.innerHTML = ''; // Borra el texto si cambiamos rápido
+                const avatar = s.querySelector('.avatar');
+                if(avatar) avatar.classList.remove('speaking');
             });
 
             if (direction === 'prev') slides[index].classList.add('reverse');
             slides[index].classList.add('active');
-            
-            lastSlide = index;
             progressBar.style.width = ((index + 1) / slides.length) * 100 + '%';
 
-            // Tiempo ajustado a 4 segundos
+            // Exactamente a los 4 segundos, se aplica el filtro oscuro, se muestra el avatar y comienza el tipeo
             slideTimer = setTimeout(() => {
                 slides[index].classList.add('show-content');
+                
                 audioRevelacion.currentTime = 0;
-                audioRevelacion.volume = 0.5;
+                audioRevelacion.volume = 0.4;
                 audioRevelacion.play().catch(e => {});
+
+                const avatarAnim = slides[index].querySelector('.avatar');
+                typeWriter(slidesData[index].txt, `text-${index}`, avatarAnim);
+
             }, 4000); 
         }
 
-        // Controles teclado
+        // Navegación
         document.addEventListener('keydown', (e) => {
             if (container.style.display === 'block') {
                 if (e.key === 'ArrowRight' || e.key === 'Space') {
