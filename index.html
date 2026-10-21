@@ -3,307 +3,483 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sustentación Maestría - Ivonne Maritza Rodríguez</title>
+    <title>Sustentación Maestría - Ivonne Maritza Rodríguez Monroy</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <!-- Fuentes académicas y cálidas -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
 
     <style>
-        /* === RESET Y VARIABLES === */
+        /* ==========================================================================
+           VARIABLES BASE DE DISEÑO Y COLORES (ESTÉTICA ALEGRE, CÁLIDA Y ACADÉMICA)
+           ========================================================================== */
         :root {
-            --primary: #e0c097;
-            --dark: #0a0c10;
-            --text: #ffffff;
-            --transition-speed: 1.8s;
+            /* Variables dinámicas que se actualizan desde el panel de inicio del JS */
+            --video-top: 50%;
+            --video-side-margin: 3%;
+            --video-size: 20%;
+
+            --img-top: 48%;
+            --img-left: 50%;
+            --img-width: 30%;
+            --img-height: 74%;
+
+            /* Paleta de colores vivos y elegantes sobre fondo claro */
+            --color-titulo: #1b4d6b;       /* Azul petróleo alegre y serio */
+            --color-acento: #e06d53;       /* Coral / Terracota cálido y vivo */
+            --color-dorado: #d99b26;       /* Amarillo ocre / Dorado vivo */
+            --color-texto: #1e293b;        /* Gris pizarra oscuro para lectura perfecta */
+            --color-blanco: #ffffff;
         }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body, html { 
-            width: 100%; height: 100%; 
-            background-color: #000; 
-            font-family: 'Montserrat', sans-serif; 
-            overflow: hidden; 
-            color: var(--text);
+
+        body, html {
+            width: 100%; height: 100%;
+            background-color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
+            user-select: none;
         }
 
-        /* Contenedor principal con relación de aspecto 16:9 horizontal */
+        /* ==========================================================================
+           CONTENEDOR 16:9 HORIZONTAL RESPONSIVO
+           Se adapta automáticamente a cualquier pantalla manteniendo proporción 16:9
+           ========================================================================== */
         #stage-16-9 {
             position: relative;
             width: 100vw;
-            height: 56.25vw; /* 16:9 ratio */
+            height: 56.25vw; /* Proporción 16:9 exacta */
             max-height: 100vh;
-            max-width: 177.78vh; /* 16:9 ratio */
-            background-color: var(--dark);
+            max-width: 177.78vh;
+            background-color: #ffffff;
             overflow: hidden;
-            box-shadow: 0 0 50px rgba(0,0,0,0.9);
+            box-shadow: 0 0 30px rgba(0,0,0,0.08);
         }
-        
-        /* === PANTALLA DE INICIO === */
-        #intro-screen {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, #161a25 0%, #050608 100%);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 100; transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1), opacity 1.5s ease;
-        }
-        #intro-screen.hidden { transform: translateY(-100%); opacity: 0; pointer-events: none; }
 
-        #intro-text {
-            text-align: center; z-index: 2; opacity: 0; transform: translateY(30px);
-            animation: slideUpFade 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 0.5s; max-width: 85%;
+        /* ==========================================================================
+           1. PANTALLA INICIAL (SOLO EL BOTÓN "INICIAR")
+           ========================================================================== */
+        #start-screen {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            transition: opacity 0.6s ease;
         }
-        #intro-text h2 { font-size: clamp(0.8rem, 1.2vw, 1.4rem); font-weight: 500; margin-bottom: 12px; color: #8e9bb0; letter-spacing: 3px; text-transform: uppercase; }
-        #intro-text h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3.2vw, 3.6rem); margin-bottom: 35px; font-weight: 600; letter-spacing: 1px; line-height: 1.2; }
-        #intro-text h3 { font-size: clamp(1.1rem, 1.8vw, 2.2rem); font-family: 'Playfair Display', serif; font-style: italic; color: var(--primary); font-weight: 400; }
 
         #btn-iniciar {
-            margin-top: 50px; z-index: 3; background: transparent; color: var(--text);
-            border: 1px solid rgba(224, 192, 151, 0.5); padding: 18px 50px; font-size: clamp(0.9rem, 1.2vw, 1.4rem); 
-            letter-spacing: 4px; cursor: pointer; border-radius: 50px; opacity: 0; 
-            animation: fadeIn 2s forwards 1.2s; transition: all 0.4s ease;
-            position: relative; overflow: hidden;
-        }
-        #btn-iniciar::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s ease;
-        }
-        #btn-iniciar:hover::before { left: 100%; }
-        #btn-iniciar:hover { background: var(--primary); color: #000; border-color: var(--primary); box-shadow: 0 0 30px rgba(224, 192, 151, 0.3); }
-
-        /* === SISTEMA DE DIAPOSITIVAS === */
-        #slides-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; }
-        
-        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; visibility: hidden; z-index: 1; pointer-events: none; }
-        .slide.active { visibility: visible; z-index: 3; pointer-events: auto; }
-        .slide.outgoing { visibility: visible; z-index: 2; }
-
-        .slide-transition {
-            width: 100%; height: 100%; position: absolute; overflow: hidden;
-            clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
-            transition: clip-path var(--transition-speed) cubic-bezier(0.77, 0, 0.175, 1);
-        }
-        .slide.active .slide-transition { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
-        .slide.active.reverse .slide-transition { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); animation: wipeReverse var(--transition-speed) cubic-bezier(0.77, 0, 0.175, 1) forwards; }
-        
-        @keyframes wipeReverse { 0% { clip-path: polygon(0 0, 0 0, 0 100%, 0 100%); } 100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); } }
-
-        .slide-bg { width: 100%; height: 100%; background-size: cover; background-position: center; transform: scale(1.1); transition: transform 25s linear; filter: brightness(1); }
-        .slide.active .slide-bg { transform: scale(1); }
-
-        .overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(5, 7, 10, 0.72); backdrop-filter: blur(8px);
-            opacity: 0; transition: opacity 1.5s ease;
-        }
-        .slide.show-content .overlay { opacity: 1; }
-
-        /* === INTERFAZ NARRADOR Y TEXTO === */
-        .narrator-container {
-            position: absolute; top: 46%; left: 8%; right: 8%;
-            display: flex; align-items: center; gap: clamp(20px, 3vw, 40px);
-            opacity: 0; transform: translateY(-20%);
-            transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1); z-index: 10;
-        }
-        .slide.show-content .narrator-container { opacity: 1; transform: translateY(-50%); }
-
-        /* Ajuste de márgenes cuando hay video a la izquierda o a la derecha */
-        .slide.has-video-left .narrator-container { left: 32%; right: 6%; }
-        .slide.has-video-right .narrator-container { left: 6%; right: 32%; }
-
-        .avatar { width: clamp(70px, 9vw, 130px); height: clamp(70px, 9vw, 130px); flex-shrink: 0; filter: drop-shadow(0px 10px 20px rgba(0,0,0,0.5)); }
-        .avatar svg { width: 100%; height: 100%; }
-        
-        .mouth { transition: ry 0.1s ease; transform-origin: center; }
-        .speaking .mouth { animation: talk 0.3s infinite alternate; }
-        @keyframes talk { 0% { ry: 1px; } 100% { ry: 8px; } }
-
-        .slide-text-wrapper { width: 100%; }
-        .slide-section-title {
+            background: linear-gradient(135deg, var(--color-titulo), #2a6f97);
+            color: #ffffff;
+            border: none;
+            padding: clamp(16px, 2.2vw, 28px) clamp(45px, 6vw, 90px);
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(0.85rem, 1.3vw, 1.3rem);
-            color: var(--primary);
+            font-size: clamp(1.2rem, 2.2vw, 2.2rem);
+            font-weight: 700;
+            letter-spacing: 5px;
+            border-radius: 60px;
+            cursor: pointer;
+            box-shadow: 0 12px 30px rgba(27, 77, 107, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+        }
+        #btn-iniciar:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, var(--color-acento), #f08a70);
+            box-shadow: 0 15px 35px rgba(224, 109, 83, 0.4);
+        }
+
+        /* ==========================================================================
+           2. CAPA DE FONDO (fondo1.png o fondo2.png)
+           ========================================================================== */
+        #bg-layer {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #ffffff;
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 1;
+            transition: background-image 0.5s ease-in-out;
+        }
+
+        /* ==========================================================================
+           3. ZONA DE VIDEOS ACOMPAÑANTES (Frente a fondo blanco, sin bordes)
+           ========================================================================== */
+        #video-companion-container {
+            position: absolute;
+            top: var(--video-top);
+            transform: translateY(-50%);
+            width: var(--video-size);
+            z-index: 15;
+            pointer-events: none;
+            transition: left 0.5s ease, right 0.5s ease, opacity 0.4s ease;
+        }
+
+        /* Alternancia Izquierda / Derecha */
+        #video-companion-container.pos-left {
+            left: var(--video-side-margin);
+            right: auto;
+        }
+        #video-companion-container.pos-right {
+            right: var(--video-side-margin);
+            left: auto;
+        }
+
+        #video-companion {
+            width: 100%;
+            height: auto;
+            display: block;
+            background-color: transparent;
+            /* Sin bordes ni sombras para que el fondo blanco del muñeco se integre con el fondo blanco */
+            border: none;
+            outline: none;
+        }
+
+        /* ==========================================================================
+           4. CONTENEDOR CENTRAL DE DIAPOSITIVAS (Texto e Imágenes)
+           Deja espacio a los lados para que nunca se pise con el video acompañante
+           ========================================================================== */
+        #main-stage {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4% 25%; /* Margen lateral amplio para respetar el video a izquierda o derecha */
+        }
+
+        /* --- MODO TEXTO (Título, Objetivos, Conclusiones y Gracias en fondo1.png) --- */
+        #text-slide-box {
+            width: 100%;
+            text-align: center;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: fadeSlideIn 0.6s ease forwards;
+            background: rgba(255, 255, 255, 0.88);
+            padding: clamp(20px, 3.5vw, 50px);
+            border-radius: 28px;
+            box-shadow: 0 12px 35px rgba(27, 77, 107, 0.08);
+            border-top: 6px solid var(--color-acento);
+        }
+
+        .badge-category {
+            display: inline-block;
+            background-color: rgba(224, 109, 83, 0.14);
+            color: var(--color-acento);
+            font-size: clamp(0.75rem, 1.2vw, 1.3rem);
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 3px;
-            margin-bottom: 12px;
+            padding: 8px 22px;
+            border-radius: 30px;
+            margin-bottom: clamp(12px, 1.8vw, 24px);
+        }
+
+        .main-heading {
+            font-family: 'Playfair Display', serif;
+            color: var(--color-titulo);
+            font-size: clamp(1.3rem, 2.5vw, 3rem);
+            font-weight: 700;
+            line-height: 1.25;
+            margin-bottom: clamp(12px, 1.5vw, 22px);
+        }
+
+        .sub-heading {
+            font-size: clamp(0.85rem, 1.3vw, 1.4rem);
+            color: #475569;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .presenter-name {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            color: var(--color-acento);
+            font-size: clamp(1.1rem, 1.9vw, 2.2rem);
+            font-weight: 600;
+            margin-top: clamp(10px, 1.5vw, 20px);
+        }
+
+        .phrase-body {
+            font-family: 'Playfair Display', serif;
+            color: var(--color-texto);
+            font-size: clamp(1.15rem, 2.2vw, 2.55rem);
+            line-height: 1.45;
             font-weight: 600;
         }
 
-        .slide-quote {
-            font-family: 'Playfair Display', serif; 
-            font-size: clamp(1.2rem, 2.2vw, 2.7rem); 
-            font-style: italic; line-height: 1.4; text-shadow: 0px 5px 15px rgba(0,0,0,0.8); color: #ffffff; width: 100%;
-        }
-        .cursor { display: inline-block; width: 3px; height: 1em; background-color: var(--primary); vertical-align: text-bottom; animation: blink 1s infinite; }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-
-        /* ==========================================================================
-           ZONA DE VIDEOS (POSICIÓN Y TAMAÑO MODIFICABLES AQUÍ)
-           Puedes cambiar 'top', 'left', 'right' y 'width' para mover los videos
-           ========================================================================== */
-        .video-box {
+        /* --- MODO IMAGEN + TEXTO ENCIMA (Sesiones fotográficas en fondo2.png) --- */
+        #photo-slide-box {
             position: absolute;
-            top: 46%; /* Posición vertical (centrado respecto al área de contenido) */
-            transform: translateY(-50%);
-            width: 22%; /* Tamaño pequeño para acompañar la presentación */
-            aspect-ratio: 9 / 16; /* Se adapta bien a videos verticales u horizontales con object-fit */
-            max-height: 60%;
-            border-radius: 14px;
+            top: var(--img-top);
+            left: var(--img-left);
+            transform: translate(-50%, -50%);
+            width: var(--img-width);
+            height: var(--img-height);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            border-radius: 22px;
             overflow: hidden;
-            border: 2px solid var(--primary);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.85);
-            z-index: 15;
-            opacity: 0;
-            transition: opacity 1.2s ease, transform 1.2s ease;
-            background: #000;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.22);
+            border: 5px solid #ffffff;
+            background-color: #ffffff;
+            transition: all 0.5s ease;
         }
 
-        .slide.show-content .video-box {
-            opacity: 1;
-        }
-
-        /* Posición cuando el video va a la IZQUIERDA */
-        .video-box.pos-left {
-            left: 5%; /* Modificar este valor para acercar o alejar del borde izquierdo */
-        }
-
-        /* Posición cuando el video va a la DERECHA */
-        .video-box.pos-right {
-            right: 5%; /* Modificar este valor para acercar o alejar del borde derecho */
-        }
-
-        .video-box video {
+        #photo-element {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: block;
+            transition: opacity 0.6s ease, transform 0.8s ease, filter 0.6s ease;
         }
-        /* =================== FIN DE ZONA DE VIDEOS EN CSS =================== */
 
-        /* === UI CONTROLES (Botones ATRÁS y ADELANTE, Audio y Progreso) === */
-        #progress-bar { position: absolute; top: 0; left: 0; height: 5px; background: var(--primary); transition: width 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); z-index: 20; width: 0%; box-shadow: 0 0 10px var(--primary); }
+        /* Cuando estamos en el Paso 2 de la imagen (Mostrar frase encima):
+           La imagen se vuelve un poquito transparente para resaltar el texto */
+        #photo-slide-box.with-text #photo-element {
+            opacity: 0.25;
+            filter: blur(2px);
+            transform: scale(1.04);
+        }
 
-        #controls-bar {
+        /* Texto superpuesto encima de la imagen */
+        #photo-overlay-text {
             position: absolute;
-            bottom: 25px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 145%; /* Sobresale un poco del marco vertical para leerse grande y claro */
+            max-width: 52vw;
+            background: rgba(255, 255, 255, 0.94);
+            padding: clamp(16px, 2.5vw, 35px) clamp(20px, 3vw, 42px);
+            border-radius: 22px;
+            border-left: 7px solid var(--color-acento);
+            box-shadow: 0 15px 40px rgba(27, 77, 107, 0.18);
+            text-align: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            z-index: 20;
+        }
+
+        /* Permitir que el texto sobresalga elegantemente del rectángulo vertical */
+        #photo-slide-box.with-text {
+            overflow: visible;
+        }
+        #photo-img-clip {
+            width: 100%;
+            height: 100%;
+            border-radius: 17px;
+            overflow: hidden;
+            position: relative;
+            background: #ffffff;
+        }
+
+        #photo-slide-box.with-text #photo-overlay-text {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        #photo-overlay-text p {
+            font-family: 'Playfair Display', serif;
+            color: var(--color-titulo);
+            font-size: clamp(1.05rem, 1.95vw, 2.25rem);
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        /* ==========================================================================
+           5. CONTROLES DE NAVEGACIÓN (FLECHAS ADELANTE Y ATRÁS SIEMPRE VISIBLES)
+           ========================================================================== */
+        #nav-controls {
+            position: absolute;
+            bottom: 2.5%;
             left: 50%;
             transform: translateX(-50%);
+            z-index: 100;
             display: none;
             align-items: center;
-            gap: 25px;
-            z-index: 50;
+            gap: clamp(14px, 2vw, 28px);
+            background: rgba(255, 255, 255, 0.92);
+            padding: 8px 22px;
+            border-radius: 50px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            border: 1px solid rgba(27, 77, 107, 0.15);
         }
 
-        .nav-btn {
-            background: rgba(10, 12, 16, 0.75);
-            border: 1px solid rgba(224, 192, 151, 0.6);
-            color: var(--text);
+        .arrow-btn {
+            background: var(--color-titulo);
+            color: #ffffff;
+            border: none;
+            padding: clamp(8px, 1vw, 13px) clamp(18px, 2vw, 28px);
+            border-radius: 40px;
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(0.8rem, 1vw, 1.1rem);
-            font-weight: 500;
-            letter-spacing: 2px;
-            padding: 12px 28px;
-            border-radius: 30px;
+            font-size: clamp(0.75rem, 1vw, 1.05rem);
+            font-weight: 700;
+            letter-spacing: 1.5px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 10px;
-            backdrop-filter: blur(8px);
-            transition: all 0.3s ease;
+            gap: 8px;
+            transition: all 0.25s ease;
         }
-        .nav-btn:hover {
-            background: var(--primary);
-            color: #000;
-            box-shadow: 0 0 20px rgba(224, 192, 151, 0.4);
+        .arrow-btn:hover:not(:disabled) {
+            background: var(--color-acento);
+            transform: translateY(-2px);
         }
-        .nav-btn:disabled {
-            opacity: 0.3;
+        .arrow-btn:disabled {
+            background: #cbd5e1;
             cursor: not-allowed;
+            opacity: 0.6;
         }
 
-        #slide-counter {
-            font-size: clamp(0.8rem, 1vw, 1rem);
-            color: rgba(255, 255, 255, 0.7);
-            letter-spacing: 2px;
-            min-width: 60px;
+        #step-indicator {
+            font-size: clamp(0.75rem, 1vw, 1rem);
+            font-weight: 700;
+            color: var(--color-titulo);
+            min-width: 70px;
             text-align: center;
         }
 
-        #btn-audio {
-            position: absolute; top: 20px; left: 20px; z-index: 50;
-            background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2);
-            color: white; font-size: 1.2rem; width: 45px; height: 45px; border-radius: 50%;
-            cursor: pointer; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px);
+        /* Botón discreto de sonido en la esquina superior */
+        #btn-mute {
+            position: absolute;
+            top: 2.5%;
+            right: 2.5%;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(27, 77, 107, 0.2);
+            color: var(--color-titulo);
+            width: clamp(36px, 3.2vw, 48px);
+            height: clamp(36px, 3.2vw, 48px);
+            border-radius: 50%;
+            font-size: clamp(1rem, 1.4vw, 1.4rem);
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        @keyframes fadeIn { to { opacity: 1; } }
-        @keyframes slideUpFade { to { opacity: 1; transform: translateY(0); } }
+        /* Barra de progreso superior */
+        #progress-bar {
+            position: absolute;
+            top: 0; left: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--color-acento), var(--color-dorado));
+            width: 0%;
+            z-index: 100;
+            transition: width 0.4s ease;
+        }
+
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
 
     <div id="stage-16-9">
-        <!-- Audio de fondo de la presentación -->
-        <audio id="audio-fondo" loop preload="auto"><source src="fondo.mp3" type="audio/mpeg"></audio>
+        <!-- Audio de fondo en bucle durante toda la presentación -->
+        <audio id="audio-fondo" src="fondo.mp3" loop preload="auto"></audio>
 
-        <!-- Pantalla Inicial -->
-        <div id="intro-screen">
-            <div id="intro-text">
-                <h2>Universidad Libre de Colombia</h2>
-                <h2>Facultad Ciencias de la Educación - Maestría en Educación</h2>
-                <h1>Estrategias psicopedagógicas para fortalecer la inclusión y las habilidades para la vida</h1>
-                <h3>Ivonne Maritza Rodríguez Monroy</h3>
-            </div>
-            <button id="btn-iniciar">INICIAR PRESENTACIÓN</button>
+        <!-- 1. Pantalla Inicial: Únicamente el botón INICIAR -->
+        <div id="start-screen">
+            <button id="btn-iniciar">INICIAR</button>
         </div>
 
-        <!-- Botón de sonido -->
-        <button id="btn-audio" title="Activar/Desactivar Sonido de Fondo">🔊</button>
-
-        <!-- Contenedor de diapositivas -->
-        <div id="slides-container"></div>
-        
-        <!-- Barra de progreso superior -->
+        <!-- Barra de progreso -->
         <div id="progress-bar"></div>
 
-        <!-- Controles de navegación para la presentadora -->
-        <div id="controls-bar">
-            <button id="btn-prev" class="nav-btn">❮ ATRÁS</button>
-            <span id="slide-counter">1 / 31</span>
-            <button id="btn-next" class="nav-btn">ADELANTE ❯</button>
+        <!-- Botón para silenciar/activar música de fondo si se requiere -->
+        <button id="btn-mute" title="Activar/Silenciar música de fondo">🔊</button>
+
+        <!-- 2. Fondo dinámico (fondo1.png o fondo2.png) -->
+        <div id="bg-layer"></div>
+
+        <!-- 3. Zona del Video Acompañante (Alterna izquierda y derecha, en bucle y sin sonido) -->
+        <div id="video-companion-container" class="pos-left" style="display: none;">
+            <video id="video-companion" src="video1.mp4" loop muted playsinline></video>
+        </div>
+
+        <!-- 4. Escenario Central (Textos e Imágenes) -->
+        <div id="main-stage" style="display: none;">
+            
+            <!-- Caja para diapositivas de Texto (Portada, Objetivos, Conclusiones y Gracias) -->
+            <div id="text-slide-box"></div>
+
+            <!-- Caja para diapositivas de Imagen Vertical + Frase superpuesta -->
+            <div id="photo-slide-box">
+                <div id="photo-img-clip">
+                    <img id="photo-element" src="" alt="Fotografía de sesión">
+                </div>
+                <div id="photo-overlay-text">
+                    <p id="photo-quote-p"></p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 5. Flechas de Navegación (Atrás / Adelante) -->
+        <div id="nav-controls">
+            <button id="btn-prev" class="arrow-btn">❮ ATRÁS</button>
+            <span id="step-indicator">1 / 1</span>
+            <button id="btn-next" class="arrow-btn">ADELANTE ❯</button>
         </div>
     </div>
 
-    <!-- Plantilla del Avatar -->
-    <template id="avatar-template">
-        <div class="avatar" id="avatar-anim">
-            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="50" cy="50" r="48" fill="#1a1f2b" stroke="#e0c097" stroke-width="2"/>
-                <path d="M 20 90 Q 50 60 80 90 Z" fill="#2c3545"/>
-                <rect x="42" y="60" width="16" height="15" fill="#e8c3a5"/>
-                <circle cx="50" cy="45" r="22" fill="#f2d1b3"/>
-                <path d="M 28 45 Q 20 20 50 15 Q 80 20 72 45 Q 85 75 50 85 Q 15 75 28 45 Z" fill="#ffffff" opacity="0.9"/>
-                <circle cx="50" cy="48" r="16" fill="#f2d1b3"/>
-                <circle cx="41" cy="42" r="6" fill="none" stroke="#5a687d" stroke-width="2"/>
-                <circle cx="59" cy="42" r="6" fill="none" stroke="#5a687d" stroke-width="2"/>
-                <line x1="47" y1="42" x2="53" y2="42" stroke="#5a687d" stroke-width="2"/>
-                <circle cx="41" cy="42" r="2" fill="#1a1f2b"/>
-                <circle cx="59" cy="42" r="2" fill="#1a1f2b"/>
-                <ellipse cx="50" cy="58" rx="5" ry="1" fill="#1a1f2b" class="mouth"/>
-            </svg>
-        </div>
-    </template>
-
     <script>
-        // ==========================================
-        const volumenFondo = 6; // Volumen de fondo.mp3 (de 0 a 10)
-        // ==========================================
+        /* ====================================================================================
+           PANEL DE AJUSTES RÁPIDOS (MODIFICA AQUÍ TAMAÑOS, POSICIONES Y VOLUMEN)
+           ==================================================================================== */
 
-        /* ==========================================================================
-           ZONA DE CONFIGURACIÓN DE VIDEOS
-           Los 6 archivos de video subidos se alternarán automáticamente a izquierda 
-           y derecha en las diapositivas.
-           ========================================================================== */
+        // 1. VOLUMEN DE LA MÚSICA DE FONDO (fondo.mp3): Número del 1 al 10
+        const VOLUMEN_FONDO = 5;
+
+        // 2. POSICIÓN Y TAMAÑO DE LOS 6 VIDEOS (Aplica a todos los videos video1.mp4 a video6.mp4)
+        const POSICION_VIDEOS = {
+            posicionVertical: '50%',   // '50%' es centrado vertical. Menos % sube el video, más % lo baja.
+            margenLateral: '2.5%',     // Distancia desde el borde izquierdo o derecho de la pantalla.
+            tamanoPorcentaje: '20%'    // Tamaño del video ('15%' más pequeño, '25%' más grande).
+        };
+
+        // 3. UBICACIÓN Y TAMAÑO DEL RECTÁNGULO CENTRAL DE LAS IMÁGENES VERTICALES
+        const UBICACION_Y_TAMANO_IMAGENES = {
+            posicionVertical: '47%',   // Posición vertical del centro de la imagen ('50%' es la mitad exacta).
+            posicionHorizontal: '50%', // '50%' es en toda la mitad horizontal de la pantalla.
+            anchoPorcentaje: '29%',    // Ancho del rectángulo de la foto vertical.
+            altoPorcentaje: '74%'      // Alto del rectángulo de la foto vertical.
+        };
+
+        // 4. CANTIDAD DE DIAPOSITIVAS ANTES DE CAMBIAR DE VIDEO Y DE LADO (Izquierda <-> Derecha)
+        const DIAPOSITIVAS_POR_VIDEO = 4;
+
+        /* ====================================================================================
+           FIN DEL PANEL DE AJUSTES RÁPIDOS
+           ==================================================================================== */
+
+        // Aplicar las variables configuradas arriba directamente al CSS
+        document.documentElement.style.setProperty('--video-top', POSICION_VIDEOS.posicionVertical);
+        document.documentElement.style.setProperty('--video-side-margin', POSICION_VIDEOS.margenLateral);
+        document.documentElement.style.setProperty('--video-size', POSICION_VIDEOS.tamanoPorcentaje);
+
+        document.documentElement.style.setProperty('--img-top', UBICACION_Y_TAMANO_IMAGENES.posicionVertical);
+        document.documentElement.style.setProperty('--img-left', UBICACION_Y_TAMANO_IMAGENES.posicionHorizontal);
+        document.documentElement.style.setProperty('--img-width', UBICACION_Y_TAMANO_IMAGENES.anchoPorcentaje);
+        document.documentElement.style.setProperty('--img-height', UBICACION_Y_TAMANO_IMAGENES.altoPorcentaje);
+
+        // Lista de los 6 videos en la carpeta
         const listaVideos = [
             'video1.mp4',
             'video2.mp4',
@@ -312,36 +488,58 @@
             'video5.mp4',
             'video6.mp4'
         ];
-        /* =================== FIN DE ZONA DE VIDEOS EN JS =================== */
 
-        // Lista completa de diapositivas:
-        // - Objetivos con fondo1.png
-        // - Desarrollo con session1a.jpg a session3h.jpg (habiendo quitado el texto de "sustentado metodológicamente..." y ajustado los textos con las imágenes)
-        // - Conclusiones y cierre con fondo2.png
-        const slidesData = [
-            // --- OBJETIVOS (con fondo1.png) ---
-            { 
-                img: 'fondo1.png', 
-                titulo: 'Objetivo General',
-                txt: 'Analizar el alcance de las estrategias pedagógicas que se desarrollan en este contexto inclusivo, buscando comprender de qué manera estas prácticas inciden en el fortalecimiento de las habilidades para la vida cotidiana y en la construcción de autonomía de quienes hacen parte del programa.' 
-            },
-            { 
-                img: 'fondo1.png', 
-                titulo: 'Objetivo Específico 1',
-                txt: 'Reconocer las características de las dinámicas inclusivas que se configuran en el ambiente pedagógico de la fundación, explorando su vinculación con los modos en que los beneficiarios participan y construyen sus aprendizajes.' 
-            },
-            { 
-                img: 'fondo1.png', 
-                titulo: 'Objetivo Específico 2',
-                txt: 'Describir las actividades de tipo recreativo y las estrategias de filtro asertivas implementadas, resaltando su papel en el fomento de la inclusión y en el fortalecimiento de habilidades básicas.' 
-            },
-            { 
-                img: 'fondo1.png', 
-                titulo: 'Objetivo Específico 3',
-                txt: 'Explorar las valoraciones que tanto los participantes como el equipo pedagógico tienen respecto a estos resultados, particularmente en el avance de su autonomía personal y habilidades sociales.' 
-            },
+        // ====================================================================================
+        // ESTRUCTURA DE CONTENIDOS DE LA PRESENTACIÓN
+        // ====================================================================================
 
-            // --- DESARROLLO DE LAS SESIONES (con texto ajustado sin "Sustentado metodológicamente...") ---
+        // 1. PORTADA Y OBJETIVOS (Se muestran sobre fondo1.png, separados por frases cortas)
+        const diapositivasIniciales = [
+            {
+                tipo: 'portada',
+                fondo: 'fondo1.png',
+                subtitulo1: 'Universidad Libre de Colombia',
+                subtitulo2: 'Facultad Ciencias de la Educación - Maestría en Educación',
+                titulo: 'Estrategias psicopedagógicas para fortalecer la inclusión y las habilidades para la vida',
+                presentadora: 'Ivonne Maritza Rodríguez Monroy'
+            },
+            {
+                tipo: 'texto',
+                fondo: 'fondo1.png',
+                categoria: 'Objetivo General (1 / 2)',
+                frase: 'Analizar el alcance de las estrategias pedagógicas que se desarrollan en este contexto inclusivo...'
+            },
+            {
+                tipo: 'texto',
+                fondo: 'fondo1.png',
+                categoria: 'Objetivo General (2 / 2)',
+                frase: '...buscando comprender de qué manera estas prácticas inciden en el fortalecimiento de las habilidades para la vida cotidiana y en la construcción de autonomía de quienes hacen parte del programa.'
+            },
+            {
+                tipo: 'texto',
+                fondo: 'fondo1.png',
+                categoria: 'Objetivo Específico 1',
+                frase: 'Reconocer las características de las dinámicas inclusivas que se configuran en el ambiente pedagógico de la fundación, explorando su vinculación con los modos en que los beneficiarios participan y construyen sus aprendizajes.'
+            },
+            {
+                tipo: 'texto',
+                fondo: 'fondo1.png',
+                categoria: 'Objetivo Específico 2',
+                frase: 'Describir las actividades de tipo recreativo y las estrategias de filtro asertivas implementadas, resaltando su papel en el fomento de la inclusión y en el fortalecimiento de habilidades básicas.'
+            },
+            {
+                tipo: 'texto',
+                fondo: 'fondo1.png',
+                categoria: 'Objetivo Específico 3',
+                frase: 'Explorar las valoraciones que tanto los participantes como el equipo pedagógico tienen respecto a estos resultados, particularmente en el avance de su autonomía personal y habilidades sociales.'
+            }
+        ];
+
+        // 2. FOTOS Y FRASES DEL DESARROLLO (Se muestran sobre fondo2.png)
+        // Nota: Si tus archivos se llaman session1a.jpg (como en tu carpeta) los carga automáticamente; 
+        // y si alguno se llama image1a.jpg también tiene soporte automático.
+        // Se eliminó el texto "Sustentado metodológicamente..." y se ajustaron las imágenes con los textos.
+        const fotosDesarrollo = [
             { img: 'session1a.jpg', txt: 'La inclusión real no se mide por la adaptación pasiva, sino por la garantía de espacios donde cada persona pueda ser, sentir y decidir con plena dignidad.' },
             { img: 'session1b.jpg', txt: 'En la Asociación para el Desarrollo de Habilidades Diversas, nos encontramos con nueve historias de vida adulta que desafían a diario las etiquetas diagnósticas.' },
             { img: 'session1c.jpg', txt: 'Frente a la tendencia de infantilizar al adulto con discapacidad, validamos el valor intrínseco de su voz y su autonomía.' },
@@ -363,229 +561,275 @@
             { img: 'session3c.jpg', txt: 'Acompañar los temblores con apoyo guiado garantizó que el participante fuera el autor de su propia herramienta.' },
             { img: 'session3d.jpg', txt: 'La calma vivenciada abrió el camino para entrenar el uso de estos recursos en el hogar y la vida independiente.' },
             { img: 'session3e.jpg', txt: 'Uno de los mayores logros fue ver a las cuidadoras soltar la mano que guiaba para convertirse en soporte logístico.' },
-            // Aquí se eliminó el texto de "Sustentado metodológicamente..." y se ajustaron las imágenes restantes:
             { img: 'session3f.jpg', txt: 'Confirmamos que la discapacidad es una invitación pedagógica a derribar las barreras del entorno.' },
             { img: 'session3g.jpg', txt: 'La mediación psicopedagógica se consolida como una práctica emancipadora de autodeterminación y dignidad.' },
             { img: 'session3h.jpg', txt: 'Educar desde el afecto y la cooperación no es una utopía: es el acto de justicia social que transforma el cuidado en libertad.' },
+            { img: 'session3i.jpg', txt: 'Cada experiencia compartida reafirma que el afecto, el respeto y la escucha activa transforman vidas.' }
+        ];
 
-            // --- CONCLUSIONES Y DEMÁS CONTENIDO (con session3i.jpg y fondo2.png) ---
-            { 
-                img: 'session3i.jpg', 
-                titulo: 'Conclusiones (1 / 4)',
-                txt: '1) El filtro afectivo disminuye el aislamiento y fomenta la participación.' 
+        // 3. CONCLUSIONES Y AGRADECIMIENTO FINAL (Vuelve a aparecer fondo1.png)
+        const diapositivasFinales = [
+            {
+                tipo: 'texto',
+                fondo: 'fondo1.png',
+                categoria: 'Conclusiones (1 / 4)',
+                frase: '1) El filtro afectivo disminuye el aislamiento y fomenta la participación.'
             },
-            { 
-                img: 'fondo2.png', 
-                titulo: 'Conclusiones (2 / 4)',
-                txt: '2) El principal obstáculo no es la diversidad funcional, sino la falta de estrategias psicopedagógicas.' 
+            {
+                tipo: 'texto',
+                fondo: 'fondo1.png',
+                categoria: 'Conclusiones (2 / 4)',
+                frase: '2) El principal obstáculo no es la diversidad funcional, sino la falta de estrategias psicopedagógicas.'
             },
-            { 
-                img: 'fondo2.png', 
-                titulo: 'Conclusiones (3 / 4)',
-                txt: '3) Urgencia de pasar del modelo asistencial al de capacidades y autonomía.' 
+            {
+                tipo: 'texto',
+                fondo: 'fondo1.png',
+                categoria: 'Conclusiones (3 / 4)',
+                frase: '3) Urgencia de pasar del modelo asistencial al de capacidades y autonomía.'
             },
-            { 
-                img: 'fondo2.png', 
-                titulo: 'Conclusión Final',
-                txt: '"Las fundaciones con enfoques diferenciales deben convertirse en laboratorios de investigación pedagógica y social, donde pasemos del cuidado infantilizado al respeto absoluto por la dignidad y la diferencia."' 
+            {
+                tipo: 'texto',
+                fondo: 'fondo1.png',
+                categoria: 'Reflexión Final (4 / 4)',
+                frase: '“Las fundaciones con enfoques diferenciales deben convertirse en laboratorios de investigación pedagógica y social, donde pasemos del cuidado infantilizado al respeto absoluto por la dignidad y la diferencia.”'
+            },
+            {
+                tipo: 'gracias',
+                fondo: 'fondo1.png',
+                titulo: '¡Muchas gracias!',
+                subtitulo: 'Gracias por su atención',
+                presentadora: 'Ivonne Maritza Rodríguez Monroy'
             }
         ];
 
-        let currentSlide = 0;
-        let slideTimer;
-        let typeWriterTimeout;
-        const container = document.getElementById('slides-container');
-        const progressBar = document.getElementById('progress-bar');
-        const audioFondo = document.getElementById('audio-fondo');
-        const avatarTemplate = document.getElementById('avatar-template').innerHTML;
+        // ====================================================================================
+        // CONSTRUCCIÓN DE LA SECUENCIA PASO A PASO (CONTROLADA POR LAS FLECHAS)
+        // Cada foto genera 2 pasos: 
+        //   Paso A: Mostrar solo la imagen en el rectángulo central.
+        //   Paso B: Hacer la imagen un poco transparente y mostrar la frase encima.
+        // ====================================================================================
+        const pasosPresentacion = [];
 
-        const controlsBar = document.getElementById('controls-bar');
-        const btnNext = document.getElementById('btn-next');
+        // Agregar portada y objetivos
+        diapositivasIniciales.forEach(item => pasosPresentacion.push(item));
+
+        // Agregar fotos (2 clics por cada foto: primero foto, luego foto + texto)
+        fotosDesarrollo.forEach(item => {
+            // Clic 1: Solo la imagen
+            pasosPresentacion.push({
+                tipo: 'foto',
+                fondo: 'fondo2.png',
+                img: item.img,
+                txt: item.txt,
+                mostrarTexto: false
+            });
+            // Clic 2: Imagen semi-transparente + frase encima
+            pasosPresentacion.push({
+                tipo: 'foto',
+                fondo: 'fondo2.png',
+                img: item.img,
+                txt: item.txt,
+                mostrarTexto: true
+            });
+        });
+
+        // Agregar conclusiones y mensaje final de agradecimiento
+        diapositivasFinales.forEach(item => pasosPresentacion.push(item));
+
+        // ====================================================================================
+        // LÓGICA DE REPRODUCCIÓN Y NAVEGACIÓN
+        // ====================================================================================
+        let pasoActual = 0;
+        let videoActualSrc = '';
+
+        const startScreen = document.getElementById('start-screen');
+        const btnIniciar = document.getElementById('btn-iniciar');
+        const bgLayer = document.getElementById('bg-layer');
+        const mainStage = document.getElementById('main-stage');
+        const textSlideBox = document.getElementById('text-slide-box');
+        const photoSlideBox = document.getElementById('photo-slide-box');
+        const photoElement = document.getElementById('photo-element');
+        const photoQuoteP = document.getElementById('photo-quote-p');
+
+        const videoContainer = document.getElementById('video-companion-container');
+        const videoElement = document.getElementById('video-companion');
+
+        const navControls = document.getElementById('nav-controls');
         const btnPrev = document.getElementById('btn-prev');
-        const btnAudio = document.getElementById('btn-audio');
-        const slideCounter = document.getElementById('slide-counter');
+        const btnNext = document.getElementById('btn-next');
+        const stepIndicator = document.getElementById('step-indicator');
+        const progressBar = document.getElementById('progress-bar');
 
-        // Construcción dinámica de diapositivas y asignación de videos alternados (izquierda / derecha)
-        slidesData.forEach((data, index) => {
-            const slideDiv = document.createElement('div');
-            
-            /* ==========================================================================
-               ZONA DE ASIGNACIÓN DE VIDEOS EN CADA DIAPOSITIVA
-               Alterna posición: índice par -> izquierda ('pos-left'), impar -> derecha ('pos-right')
-               Cambia entre video1.mp4 y video6.mp4 secuencialmente.
-               ========================================================================== */
-            const videoFile = listaVideos[index % listaVideos.length];
-            const isLeft = (index % 2 === 0);
-            const videoPosClass = isLeft ? 'pos-left' : 'pos-right';
-            const slideLayoutClass = isLeft ? 'has-video-left' : 'has-video-right';
+        const audioFondo = document.getElementById('audio-fondo');
+        const btnMute = document.getElementById('btn-mute');
 
-            slideDiv.className = `slide ${slideLayoutClass}`;
-            
-            const tituloHTML = data.titulo ? `<div class="slide-section-title">${data.titulo}</div>` : '';
-
-            slideDiv.innerHTML = `
-                <div class="slide-transition">
-                    <div class="slide-bg" style="background-image: url('${data.img}');"></div>
-                    <div class="overlay"></div>
-                </div>
-
-                <!-- ZONA DE VIDEO EN HTML: Reproducción en bucle (loop) y sin sonido (muted) -->
-                <div class="video-box ${videoPosClass}">
-                    <video src="${videoFile}" loop muted playsinline preload="metadata"></video>
-                </div>
-
-                <div class="narrator-container">
-                    ${avatarTemplate}
-                    <div class="slide-text-wrapper">
-                        ${tituloHTML}
-                        <div class="slide-quote">
-                            <span class="text-container" id="text-${index}"></span><span class="cursor"></span>
-                        </div>
-                    </div>
-                </div>
-            `;
-            container.appendChild(slideDiv);
-        });
-
-        const slides = document.querySelectorAll('.slide');
-
-        function typeWriter(text, elementId, avatarElement) {
-            const element = document.getElementById(elementId);
-            element.innerHTML = '';
-            let i = 0;
-            avatarElement.classList.add('speaking'); 
-
-            function type() {
-                if (i < text.length) {
-                    element.innerHTML += text.charAt(i);
-                    i++;
-                    typeWriterTimeout = setTimeout(type, 32); 
-                } else {
-                    avatarElement.classList.remove('speaking'); 
-                }
+        // Respaldo automático por si alguna imagen se renombró de session1a.jpg a image1a.jpg
+        photoElement.onerror = function() {
+            if (this.src.includes('session')) {
+                this.src = this.src.replace('session', 'image');
             }
-            type();
-        }
+        };
 
-        // --- INICIO EN PANTALLA COMPLETA Y AUDIO DE FONDO ---
-        document.getElementById('btn-iniciar').addEventListener('click', () => {
-            const elem = document.documentElement;
-            if (elem.requestFullscreen) { elem.requestFullscreen(); } 
-            else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); } 
-            else if (elem.msRequestFullscreen) { elem.msRequestFullscreen(); }
+        // Botón INICIAR: activa pantalla completa, inicia audio y muestra la primera diapositiva
+        btnIniciar.addEventListener('click', () => {
+            const docEl = document.documentElement;
+            if (docEl.requestFullscreen) { docEl.requestFullscreen().catch(() => {}); }
+            else if (docEl.webkitRequestFullscreen) { docEl.webkitRequestFullscreen(); }
+            else if (docEl.msRequestFullscreen) { docEl.msRequestFullscreen(); }
 
-            audioFondo.volume = volumenFondo / 10;
-            
-            let playPromise = audioFondo.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    console.log("Audio bloqueado por el navegador:", error);
-                    btnAudio.innerHTML = "🔇";
-                });
-            }
+            // Iniciar audio de fondo con el volumen configurado (1 a 10)
+            audioFondo.volume = Math.min(Math.max(VOLUMEN_FONDO, 0), 10) / 10;
+            audioFondo.play().catch(err => {
+                console.log("Audio en espera de interacción:", err);
+                btnMute.textContent = '🔇';
+            });
 
-            document.getElementById('intro-screen').classList.add('hidden');
-            
-            controlsBar.style.display = 'flex';
-            btnAudio.style.display = 'flex';
-
+            // Ocultar pantalla inicial y desplegar presentación
+            startScreen.style.opacity = '0';
             setTimeout(() => {
-                document.getElementById('intro-screen').style.display = 'none';
-                container.style.display = 'block';
-                showSlide(0, 'next');
-            }, 1200);
+                startScreen.style.display = 'none';
+                mainStage.style.display = 'flex';
+                videoContainer.style.display = 'block';
+                navControls.style.display = 'flex';
+                btnMute.style.display = 'flex';
+                renderizarPaso(0);
+            }, 500);
         });
 
-        // Botón para silenciar/activar fondo.mp3
-        btnAudio.addEventListener('click', () => {
+        // Control de mute para la música de fondo
+        btnMute.addEventListener('click', () => {
             if (audioFondo.paused || audioFondo.muted) {
                 audioFondo.muted = false;
                 audioFondo.play();
-                btnAudio.innerHTML = "🔊";
+                btnMute.textContent = '🔊';
             } else {
                 audioFondo.muted = true;
-                btnAudio.innerHTML = "🔇";
+                btnMute.textContent = '🔇';
             }
         });
 
-        function showSlide(index, direction) {
-            clearTimeout(slideTimer);
-            clearTimeout(typeWriterTimeout);
-            
-            // Pausar todos los videos de las otras diapositivas y limpiar estado
-            slides.forEach((s, i) => {
-                s.classList.remove('active', 'outgoing', 'reverse', 'show-content');
-                const txt = document.getElementById(`text-${i}`);
-                if (txt) txt.innerHTML = ''; 
-                const avatar = s.querySelector('.avatar');
-                if (avatar) avatar.classList.remove('speaking');
+        // Función que actualiza la pantalla en cada clic de Adelante o Atrás
+        function renderizarPaso(index) {
+            const paso = pasosPresentacion[index];
 
-                const vid = s.querySelector('video');
-                if (vid) {
-                    vid.pause();
-                    vid.currentTime = 0;
+            // 1. Actualizar fondo (fondo1.png o fondo2.png)
+            bgLayer.style.backgroundImage = `url('${paso.fondo}')`;
+
+            // 2. Actualizar Video Acompañante (Alterna cada 4 pasos entre izquierda y derecha)
+            const bloqueVideo = Math.floor(index / DIAPOSITIVAS_POR_VIDEO);
+            const indiceVideo = bloqueVideo % listaVideos.length;
+            const nuevoVideoSrc = listaVideos[indiceVideo];
+            const esIzquierda = (bloqueVideo % 2 === 0);
+
+            videoContainer.className = esIzquierda ? 'pos-left' : 'pos-right';
+
+            if (videoActualSrc !== nuevoVideoSrc) {
+                videoActualSrc = nuevoVideoSrc;
+                videoElement.src = nuevoVideoSrc;
+            }
+            // Asegurar que siempre esté en mute y reproduciéndose en bucle
+            videoElement.muted = true;
+            if (videoElement.paused) {
+                videoElement.play().catch(() => {});
+            }
+
+            // 3. Renderizar contenido según el tipo de paso
+            if (paso.tipo === 'portada') {
+                photoSlideBox.style.display = 'none';
+                textSlideBox.style.display = 'flex';
+                textSlideBox.innerHTML = `
+                    <div class="sub-heading">${paso.subtitulo1}</div>
+                    <div class="sub-heading" style="color: var(--color-acento); margin-bottom: 18px;">${paso.subtitulo2}</div>
+                    <h1 class="main-heading">${paso.titulo}</h1>
+                    <div class="presenter-name">${paso.presentadora}</div>
+                `;
+            } 
+            else if (paso.tipo === 'texto') {
+                photoSlideBox.style.display = 'none';
+                textSlideBox.style.display = 'flex';
+                textSlideBox.innerHTML = `
+                    <span class="badge-category">${paso.categoria}</span>
+                    <p class="phrase-body">${paso.frase}</p>
+                `;
+            } 
+            else if (paso.tipo === 'gracias') {
+                photoSlideBox.style.display = 'none';
+                textSlideBox.style.display = 'flex';
+                textSlideBox.innerHTML = `
+                    <span class="badge-category">Cierre de Sustentación</span>
+                    <h1 class="main-heading" style="font-size: clamp(2rem, 4vw, 4.5rem); color: var(--color-acento);">${paso.titulo}</h1>
+                    <p class="phrase-body" style="margin-bottom: 15px;">${paso.subtitulo}</p>
+                    <div class="presenter-name">${paso.presentadora}</div>
+                `;
+            } 
+            else if (paso.tipo === 'foto') {
+                textSlideBox.style.display = 'none';
+                photoSlideBox.style.display = 'flex';
+
+                // Cambiar imagen solo si es diferente a la actual para una transición limpia
+                if (!photoElement.getAttribute('src') || !photoElement.getAttribute('src').endsWith(paso.img)) {
+                    photoElement.src = paso.img;
                 }
-            });
+                photoQuoteP.textContent = paso.txt;
 
-            if (direction === 'prev') slides[index].classList.add('reverse');
-            slides[index].classList.add('active');
-            
-            // Actualizar barra de progreso y contador de botones
-            progressBar.style.width = ((index + 1) / slides.length) * 100 + '%';
-            slideCounter.textContent = `${index + 1} / ${slides.length}`;
+                if (paso.mostrarTexto) {
+                    photoSlideBox.classList.add('with-text');
+                } else {
+                    photoSlideBox.classList.remove('with-text');
+                }
+            }
+
+            // 4. Actualizar estado de botones y barra de progreso
             btnPrev.disabled = (index === 0);
-            btnNext.disabled = (index === slides.length - 1);
-
-            // Reproducir en bucle y sin sonido el video de la diapositiva actual
-            const activeVideo = slides[index].querySelector('video');
-            if (activeVideo) {
-                activeVideo.muted = true;
-                activeVideo.play().catch(e => {});
-            }
-
-            // Mostrar el texto y animar al narrador
-            slideTimer = setTimeout(() => {
-                slides[index].classList.add('show-content');
-                const avatarAnim = slides[index].querySelector('.avatar');
-                typeWriter(slidesData[index].txt, `text-${index}`, avatarAnim);
-            }, 2200); 
+            btnNext.disabled = (index === pasosPresentacion.length - 1);
+            stepIndicator.textContent = `${index + 1} / ${pasosPresentacion.length}`;
+            progressBar.style.width = `${((index + 1) / pasosPresentacion.length) * 100}%`;
         }
 
-        // --- CONTROLES DE NAVEGACIÓN (ATRÁS Y ADELANTE) ---
-        function irSiguiente() {
-            if (currentSlide < slides.length - 1) {
-                currentSlide++;
-                showSlide(currentSlide, 'next');
-            }
-        }
-        function irAnterior() {
-            if (currentSlide > 0) {
-                currentSlide--;
-                showSlide(currentSlide, 'prev');
+        // Funciones de avanzar y retroceder
+        function avanzar() {
+            if (pasoActual < pasosPresentacion.length - 1) {
+                pasoActual++;
+                renderizarPaso(pasoActual);
             }
         }
 
-        btnNext.addEventListener('click', irSiguiente);
-        btnPrev.addEventListener('click', irAnterior);
+        function retroceder() {
+            if (pasoActual > 0) {
+                pasoActual--;
+                renderizarPaso(pasoActual);
+            }
+        }
 
+        btnNext.addEventListener('click', avanzar);
+        btnPrev.addEventListener('click', retroceder);
+
+        // Soporte para teclado (Flechas o Barra espaciadora)
         document.addEventListener('keydown', (e) => {
-            if (container.style.display === 'block') {
-                if (e.key === 'ArrowRight' || e.key === ' ') irSiguiente();
-                else if (e.key === 'ArrowLeft') irAnterior();
+            if (mainStage.style.display !== 'none') {
+                if (e.key === 'ArrowRight' || e.key === ' ') {
+                    e.preventDefault();
+                    avanzar();
+                } else if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    retroceder();
+                }
             }
         });
 
-        // --- SOPORTE SWIPE PARA PANTALLAS TÁCTILES ---
-        let touchstartX = 0;
-        let touchendX = 0;
-        document.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; });
-        document.addEventListener('touchend', e => {
-            touchendX = e.changedTouches[0].screenX;
-            if (container.style.display === 'block') {
-                if (touchendX < touchstartX - 50) irSiguiente();
-                if (touchendX > touchstartX + 50) irAnterior();
+        // Soporte para deslizar en pantallas táctiles (tablets o celulares)
+        let touchStartX = 0;
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        document.addEventListener('touchend', (e) => {
+            if (mainStage.style.display !== 'none') {
+                const touchEndX = e.changedTouches[0].screenX;
+                if (touchEndX < touchStartX - 50) avanzar();
+                if (touchEndX > touchStartX + 50) retroceder();
             }
-        });
+        }, { passive: true });
     </script>
 </body>
 </html>
