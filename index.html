@@ -449,7 +449,7 @@
 
         // 2. POSICIÓN Y TAMAÑO DE LOS 6 VIDEOS (Aplica a todos los videos video1.mp4 a video6.mp4)
         const POSICION_VIDEOS = {
-            posicionVertical: '50%',   // '50%' es centrado vertical. Menos % sube el video, más % lo baja.
+            posicionVertical: '58%',   // '50%' es centrado vertical. Menos % sube el video, más % lo baja.
             margenLateral: '2.5%',     // Distancia desde el borde izquierdo o derecho de la pantalla.
             tamanoPorcentaje: '20%'    // Tamaño del video ('15%' más pequeño, '25%' más grande).
         };
@@ -715,13 +715,12 @@
             // 1. Actualizar fondo (fondo1.png o fondo2.png)
             bgLayer.style.backgroundImage = `url('${paso.fondo}')`;
 
-            // 2. Actualizar Video Acompañante (Alterna cada 4 pasos entre izquierda y derecha)
+            // 2. Actualizar Video Acompañante (Siempre fijo a la izquierda, cambiando de video cada 4 pasos)
             const bloqueVideo = Math.floor(index / DIAPOSITIVAS_POR_VIDEO);
             const indiceVideo = bloqueVideo % listaVideos.length;
             const nuevoVideoSrc = listaVideos[indiceVideo];
-            const esIzquierda = (bloqueVideo % 2 === 0);
 
-            videoContainer.className = esIzquierda ? 'pos-left' : 'pos-right';
+            videoContainer.className = 'pos-left';
 
             if (videoActualSrc !== nuevoVideoSrc) {
                 videoActualSrc = nuevoVideoSrc;
